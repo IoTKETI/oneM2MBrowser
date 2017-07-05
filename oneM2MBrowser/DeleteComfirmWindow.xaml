@@ -1,0 +1,29 @@
+﻿<Window x:Class="MobiusResourceMonitor_sub.DeleteComfirmWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MobiusResourceMonitor_sub"
+        mc:Ignorable="d"
+        Title="[DeleteComfirmWindow]" Height="160" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Please input [DELETE] if you want to delete this resource!" TextWrapping="WrapWithOverflow" Margin="5" VerticalAlignment="Center"></TextBlock>
+        <TextBox x:Name="txtConfirm" Grid.Row="1" Grid.Column="0" Width="100" Margin="5" TextAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnOK" Grid.Row="0" Grid.Column="0" Margin="5" Content="OK" Width="70" Click="btnOK_Click"></Button>
+            <Button x:Name="btnCancel" Grid.Row="0" Grid.Column="1" Margin="5" Content="Cancel" Width="70" Click="btnCancel_Click"></Button>
+        </Grid>
+    </Grid>
+</Window>

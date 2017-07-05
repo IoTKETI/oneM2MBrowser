@@ -1,0 +1,29 @@
+﻿<Window x:Class="MobiusResourceMonitor_sub.AcpInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MobiusResourceMonitor_sub"
+        mc:Ignorable="d"
+        Title="[ACP Input Window]" Height="150" Width="300" WindowStartupLocation="CenterScreen" Icon="image/KETI_logo.png" WindowStyle="ToolWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="This resource request access policy" TextWrapping="Wrap" Margin="5" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Please input an effective ACP...!" TextWrapping="Wrap" Margin="5" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="ACP: " VerticalAlignment="Center"></TextBlock>
+        <TextBox x:Name="txtACP" Grid.Row="2" Grid.Column="1" Margin="5" TextAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <StackPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+            <Button Content="OK" Margin="5" Width="80" x:Name="btnOK" Click="btnOK_Click"></Button>
+            <Button Content="Cancel" Margin="5" Width="80" x:Name="btnCancel" Click="btnCancel_Click"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

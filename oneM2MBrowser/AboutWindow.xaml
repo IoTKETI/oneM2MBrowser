@@ -1,0 +1,55 @@
+﻿<Window x:Class="MobiusResourceMonitor_sub.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MobiusResourceMonitor_sub"
+        mc:Ignorable="d"
+         Title="AboutWindow" Height="387" Width="416" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="Transparent">
+    <Border BorderBrush="LightBlue" BorderThickness="1" CornerRadius="5" Background="White">
+        <StackPanel Margin="20" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <Image Source="image/KETI_logo.png" Width="50"></Image>
+                <TextBlock Margin="10,5,0,0"><Run Text="Mobius Resource Tree Vi"/><Run Text="e"/><Run Text="wer"/></TextBlock>
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Author:" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="ChenNan" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="HomePage:" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5">
+                    <Hyperlink NavigateUri="http://www.iotocean.org/main"  Click="Hyperlink_Click">http://www.iotocean.org</Hyperlink>
+                </TextBlock>
+                <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                    <GroupBox.Header>
+                        <TextBlock HorizontalAlignment="Center"><Run Text="KETI "/><Run Text="Licence"/></TextBlock>
+                    </GroupBox.Header>
+                    <GroupBox.Content>
+                        <StackPanel Margin="10">
+                            <TextBlock TextWrapping="Wrap">
+                                    Copyright 2014 Korea Electronics Technology Institute Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+                            </TextBlock>
+                            
+                            <TextBlock Margin="20,10,10,10">
+                                <Hyperlink NavigateUri="http://www.apache.org/licenses/LICENSE-2.0" Click="Hyperlink_Click_1">http://www.apache.org/licenses/LICENSE-2.0</Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap">
+                                    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+                            </TextBlock>
+                        </StackPanel>
+                    </GroupBox.Content>
+                </GroupBox>
+                <Button x:Name="btnOK" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="80" Height="24" Content="Close" Margin="5" Click="btnOK_Click"></Button>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>
