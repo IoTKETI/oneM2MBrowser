@@ -270,7 +270,7 @@ namespace MobiusResourceMonitor_sub
                 //// (e.g. during debug)
                 version = "not installed";
             }
-            this.Title = @"[Resource Monitoring-" + version + @"]";
+            this.Title = @"[oneM2M Browser-" + version + @"]";
 
             this.txtResourceUri.Text = Loader.GetResourcePath();
             //this.txtIP.Text = Loader.GetNotificationIP();
