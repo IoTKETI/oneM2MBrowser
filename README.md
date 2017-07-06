@@ -36,7 +36,7 @@ If you are not familiar with XAML language the Mircrosoft also provide [Microsof
 
 ## Built With
 
-### Basci framework
+### Basic framework
 
 * [WPF](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.140).aspx) - The UI framework used
 
