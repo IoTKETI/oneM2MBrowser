@@ -1,0 +1,50 @@
+# oneM2MBrowser
+oneM2MBrowser is a tool for monitoring the oneM2M resources in the Mobius Yellow Turtle(Mobius-yt). It is working base on oneM2M HTTP RESTful API and MQTT Message. It was designed for helping developer to easily work with Mobius-yt.
+
+## Getting Started
+
+Download the source file from [oneM2MBrowser github site](https://github.com/IoTKETI/oneM2MBrowser). 
+
+### Installing
+
+The oneM2MBrowser project is a Vistual Stido project. So it only can work on window PC.
+
+If you don't have the winPC that we suggest to insall the [VMware WorkStation Player](https://www.vmware.com/products/player/playerpro-evaluation.html) and run a Virtrual Machine on it.
+
+1. Download the [Visual Stido](https://www.visualstudio.com/).
+
+2. Install the Visual Stido follow the guid.
+
+3. Open the oneM2MBrowser home and double click oneM2MBrowser.sln file.
+
+## Running
+
+1. Press the F5 key in Visual stido or click the start button on top of Visual stido IDE.
+
+2. Input a resource URL into oneM2MBrowser and click start button. oneM2MBrowser will show the all child resources of yours after finishing discovery process. 
+
+## Deployment
+
+The oneM2MBrowser is developed base on [WPF application](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.140).aspx) which include in .net framework.
+
+So the UI part is written with [XAML](https://msdn.microsoft.com/en-us/library/cc295302.aspx) language and logic part is written with C#.
+
+If you are not familiar with XAML language the Mircrosoft also provide Microsoft Blend(https://msdn.microsoft.com/en-us/library/jj171012.aspx) for helping developer to edit UI XAML.
+
+## Built With
+
+### Basci framework
+* [WPF](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.140).aspx) - The UI framework used
+
+### Nuget installation libraries
+* [Newtonsoft.Json](http://www.newtonsoft.com/json) - The JSON format parser
+* [M2Mqtt](https://www.nuget.org/packages/M2Mqtt/4.3.0) - The MQTT message protocol used
+
+## Authors
+
+* **Chen Nan** - *Initial work* - [coffeenan](https://github.com/coffeenan)
+
+## License
+
+- [BSD 3-Clause License](http://www.iotocean.org/license/) ([OCEAN](http://www.iotocean.org/main/))
+
