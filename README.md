@@ -1,5 +1,5 @@
 # oneM2MBrowser
-oneM2MBrowser is a tool for monitoring the oneM2M resources in the Mobius Yellow Turtle(Mobius-yt). It is working base on oneM2M HTTP RESTful API and MQTT Message. It was designed for helping developer to easily work with Mobius-yt.
+oneM2MBrowser is a tool for monitoring the oneM2M resources in the Mobius Yellow Turtle([Mobius-yt](https://github.com/IoTKETI/Mobius)). It is working base on oneM2M HTTP RESTful API and MQTT Message. It was designed for helping developer to easily work with Mobius-yt.
 
 ## Getting Started
 
@@ -7,13 +7,13 @@ Download the source file from [oneM2MBrowser github site](https://github.com/IoT
 
 ### Installing
 
-The oneM2MBrowser project is a Vistual Stido project. So it only can work on window PC.
+The oneM2MBrowser project is a Vistual Studio project. So it only can work on window PC.
 
 If you don't have the winPC that we suggest to insall the [VMware WorkStation Player](https://www.vmware.com/products/player/playerpro-evaluation.html) and run a Virtrual Machine on it.
 
-1. Download the [Visual Stido](https://www.visualstudio.com/).
+1. Download the [Visual Studio](https://www.visualstudio.com/).
 
-2. Install the Visual Stido follow the guid.
+2. Install the Visual Studio follow the guid.
 
 3. Open the oneM2MBrowser home and double click oneM2MBrowser.sln file.
 
