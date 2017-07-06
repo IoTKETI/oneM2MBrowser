@@ -29,7 +29,7 @@ The oneM2MBrowser is developed base on [WPF application](https://msdn.microsoft.
 
 So the UI part is written with [XAML](https://msdn.microsoft.com/en-us/library/cc295302.aspx) language and logic part is written with C#.
 
-If you are not familiar with XAML language the Mircrosoft also provide Microsoft Blend(https://msdn.microsoft.com/en-us/library/jj171012.aspx) for helping developer to edit UI XAML.
+If you are not familiar with XAML language the Mircrosoft also provide [Microsoft Blend](https://msdn.microsoft.com/en-us/library/jj171012.aspx) for helping developer to edit UI XAML.
 
 ## Built With
 
