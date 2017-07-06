@@ -34,9 +34,11 @@ If you are not familiar with XAML language the Mircrosoft also provide [Microsof
 ## Built With
 
 ### Basci framework
+
 * [WPF](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.140).aspx) - The UI framework used
 
 ### Nuget installation libraries
+
 * [Newtonsoft.Json](http://www.newtonsoft.com/json) - The JSON format parser
 * [M2Mqtt](https://www.nuget.org/packages/M2Mqtt/4.3.0) - The MQTT message protocol used
 
