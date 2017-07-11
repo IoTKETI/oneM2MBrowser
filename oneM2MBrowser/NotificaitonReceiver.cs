@@ -324,15 +324,6 @@ namespace MobiusResourceMonitor_sub
                 this.Path = str.Substring(index_s + 5, index_e - index_s - 5);
                 return;
             }
-
-            index_s = str.IndexOf("<subscriptionReference>");
-            index_e = str.IndexOf("</subscriptionReference>");
-
-            if (index_s > 0 && index_e > 0)
-            {
-                this.Path = str.Substring(index_s + 23, index_e - index_s - 23);
-                return;
-            }
         }
 
         private void FindContent(string str)
@@ -346,15 +337,6 @@ namespace MobiusResourceMonitor_sub
             if (index_s > 0 && index_e > 0)
             {
                 this.Content = str.Substring(index_s + 5, index_e - 5);
-                return;
-            }
-
-            index_s = str.IndexOf("<content>");
-            index_e = str.IndexOf("</content>");
-
-            if (index_s > 0 && index_e > 0)
-            {
-                this.Content = str.Substring(index_s + 9, index_e - 9);
                 return;
             }
         }
@@ -385,15 +367,6 @@ namespace MobiusResourceMonitor_sub
             if (index_s > 0 && index_e > 0)
             {
                 this.ResourceType = getResourceTypeName(str.Substring(index_s + 4, index_e - 4));
-                return;
-            }
-
-            index_s = str.IndexOf("<resourceType>");
-            index_e = str.IndexOf("</resourceType>");
-
-            if (index_s > 0 && index_e > 0)
-            {
-                this.ResourceType = getResourceTypeName(str.Substring(index_s + 14, index_e - 14));
                 return;
             }
         }
