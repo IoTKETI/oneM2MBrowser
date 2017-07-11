@@ -47,7 +47,7 @@ If you are not familiar with XAML language the Mircrosoft also provide [Microsof
 
 ## Authors
 
-* **Chen Nan** - *Initial work* - [coffeenan](https://github.com/coffeenan)
+* **Chen Nan** - *Initial work* - [coffeenan](https://github.com/coffeenan) (xuehu0000@keti.re.kr)
 
 ## License
 
