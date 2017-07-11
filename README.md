@@ -20,7 +20,7 @@ If you don't have the winPC that we suggest to insall the [VMware WorkStation Pl
 
 ## Running
 
-1. Press the F5 key in Visual stido or click the start button on top of Visual stido IDE.
+1. Press the F5 key in Visual studio or click the start button on top of Visual studio IDE.
 
 2. Input a resource URL into oneM2MBrowser and click start button. oneM2MBrowser will show the all child resources of yours after finishing discovery process. 
 
