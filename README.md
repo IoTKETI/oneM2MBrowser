@@ -14,13 +14,13 @@ If you don't have the winPC that we suggest to insall the [VMware WorkStation Pl
 
 1. Download the [Visual Studio](https://www.visualstudio.com/).
 
-2. Install the Visual Studio follow the guid.
+2. Install the Visual Studio follow the guide.
 
 3. Open the oneM2MBrowser home and double click oneM2MBrowser.sln file.
 
 ## Running
 
-1. Press the F5 key in Visual stido or click the start button on top of Visual stido IDE.
+1. Press the F5 key in Visual studio or click the start button on top of Visual studio IDE.
 
 2. Input a resource URL into oneM2MBrowser and click start button. oneM2MBrowser will show the all child resources of yours after finishing discovery process. 
 
@@ -47,7 +47,7 @@ If you are not familiar with XAML language the Mircrosoft also provide [Microsof
 
 ## Authors
 
-* **Chen Nan** - *Initial work* - [coffeenan](https://github.com/coffeenan)
+* **Chen Nan** - *Initial work* - [coffeenan](https://github.com/coffeenan) (xuehu0000@keti.re.kr)
 
 ## License
 
