@@ -6,7 +6,7 @@ oneM2MBrowser is a tool for monitoring the oneM2M resources in the Mobius Yellow
 
 Download the source file from [oneM2MBrowser github site](https://github.com/IoTKETI/oneM2MBrowser). 
 
-## Installing
+## Installation
 
 The oneM2MBrowser project is a Vistual Studio project. So it only can work on window PC.
 
@@ -26,7 +26,7 @@ If you don't have the winPC that we suggest to insall the [VMware WorkStation Pl
 
 ![Resource viwer](https://user-images.githubusercontent.com/29790334/27902099-7390f3f2-626f-11e7-86ac-be3405d3beb5.PNG)
 
-## Deployment
+## Deveployment
 
 The oneM2MBrowser is developed base on [WPF application](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.140).aspx) which include in .net framework.
 
