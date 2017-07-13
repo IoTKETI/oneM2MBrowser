@@ -37,7 +37,7 @@ namespace MobiusResourceMonitor_sub
             {
                 SD = new SemanticDescriptorObject();
                 SD.RN = this.txtRN.Text;
-                SD.DSPT = allText;
+                SD.DCRP = allText;
                 //SD.DSPT = allText;
 
                 this.DialogResult = true;

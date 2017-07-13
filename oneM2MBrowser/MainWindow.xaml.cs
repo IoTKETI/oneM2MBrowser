@@ -1050,13 +1050,13 @@ namespace MobiusResourceMonitor_sub
             if (this.contentType == "XML")
             {
                 sd.Parse(msg, OneM2MResourceMessageType.XML);
-                var window = new SemanticDisplayWindow(sd.DSPT);
+                var window = new SemanticDisplayWindow(sd.DCRP);
                 window.Show();
             }
             else if (this.contentType == "Json")
             {
                 sd.Parse(msg, OneM2MResourceMessageType.JSON);
-                var window = new SemanticDisplayWindow(sd.DSPT);
+                var window = new SemanticDisplayWindow(sd.DCRP);
                 window.Show();
             }
         }

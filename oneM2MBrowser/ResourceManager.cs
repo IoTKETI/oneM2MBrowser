@@ -2471,7 +2471,7 @@ namespace MobiusResourceMonitor_sub
             {
                 rt_code = "23";
             }
-            else if (rt_str == "SemanticDescriptor" || rt_str == "sd")
+            else if (rt_str == "SemanticDescriptor" || rt_str == "smd")
             {
                 rt_code = "24";
             }
@@ -2479,7 +2479,7 @@ namespace MobiusResourceMonitor_sub
             {
                 rt_code = "25";
             }
-            else if (rt_str == "TimeSeriesContentInstance" || rt_str == "tscin")
+            else if (rt_str == "TimeSeriesContentInstance" || rt_str == "tsi")
             {
                 rt_code = "26";
             }
@@ -3390,7 +3390,7 @@ namespace MobiusResourceMonitor_sub
 
     public class SemanticDescriptorObject : OneM2MResource
     {
-        public string DSPT { get; set; }
+        public string DCRP { get; set; }
 
         public SemanticDescriptorObject() : base(OneM2MResourceType.SemanticDescriptor)
         {
@@ -3407,7 +3407,7 @@ namespace MobiusResourceMonitor_sub
 
             XmlDeclaration xmldc = doc.CreateXmlDeclaration("1.0", "UTF-8", "yes");
 
-            XmlElement eleRoot = doc.CreateElement("m2m", "sd", OneM2MResource.PREFIX_M2M);
+            XmlElement eleRoot = doc.CreateElement("m2m", "smd", OneM2MResource.PREFIX_M2M);
 
             eleRoot.SetAttribute("xmlns:m2m", OneM2MResource.PREFIX_M2M);
             eleRoot.SetAttribute("xmlns:xsi", OneM2MResource.PREFIX_XSI);
@@ -3417,10 +3417,10 @@ namespace MobiusResourceMonitor_sub
                 eleRoot.SetAttribute("rn", this.RN);
             }
 
-            if (DSPT != null && DSPT.Length > 0)
+            if (DCRP != null && DCRP.Length > 0)
             {
-                XmlElement ele = doc.CreateElement("dspt");
-                ele.InnerText = EncodingHelper.Base64Encode(this.DSPT);
+                XmlElement ele = doc.CreateElement("dcrp");
+                ele.InnerText = EncodingHelper.Base64Encode(this.DCRP);
                 //ele.InnerText = this.DSPT;
                 eleRoot.AppendChild(ele);
             }
@@ -3436,14 +3436,14 @@ namespace MobiusResourceMonitor_sub
         {
             JObject doc = JObject.Parse(json);
 
-            JObject root = doc["m2m:sd"] as JObject;
+            JObject root = doc["m2m:smd"] as JObject;
 
             if(root != null)
             {
                 JValue jRN = root["rn"] as JValue;
                 JValue jPI = root["pi"] as JValue;
                 JValue jRI = root["ri"] as JValue;
-                JValue jDSPT = root["dspt"] as JValue;
+                JValue jDSPT = root["dcrp"] as JValue;
 
                 if(jPI != null)
                 {
@@ -3462,8 +3462,8 @@ namespace MobiusResourceMonitor_sub
 
                 if (jDSPT != null)
                 {
-                    this.DSPT = jDSPT.ToObject<string>();
-                    this.DSPT = EncodingHelper.Base64Decode(this.DSPT);
+                    this.DCRP = jDSPT.ToObject<string>();
+                    this.DCRP = EncodingHelper.Base64Decode(this.DCRP);
                 }
             }
         }
@@ -3477,13 +3477,13 @@ namespace MobiusResourceMonitor_sub
             nsMgr.AddNamespace("m2m", OneM2MResource.PREFIX_M2M);
             nsMgr.AddNamespace("xsi", OneM2MResource.PREFIX_XSI);
 
-            XmlElement eleRoot = doc.SelectSingleNode("m2m:sd", nsMgr) as XmlElement;
+            XmlElement eleRoot = doc.SelectSingleNode("m2m:smd", nsMgr) as XmlElement;
 
             if (eleRoot != null)
             {
                 XmlElement elePI = eleRoot.SelectSingleNode("pi") as XmlElement;
                 XmlElement eleRI = eleRoot.SelectSingleNode("ri") as XmlElement;
-                XmlElement eleDSPT = eleRoot.SelectSingleNode("dspt") as XmlElement;
+                XmlElement eleDSPT = eleRoot.SelectSingleNode("dcrp") as XmlElement;
 
                 if (elePI != null)
                 {
@@ -3497,7 +3497,7 @@ namespace MobiusResourceMonitor_sub
 
                 if (eleDSPT != null)
                 {
-                    this.DSPT = EncodingHelper.Base64Decode(eleDSPT.InnerText);
+                    this.DCRP = EncodingHelper.Base64Decode(eleDSPT.InnerText);
                     //this.DSPT = eleDSPT.InnerText;
                 }
 

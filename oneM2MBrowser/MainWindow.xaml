@@ -173,11 +173,11 @@
                                 <Ellipse Grid.Row="4" Grid.Column="0" Width="24" Height="24" Fill="LightGray" Stroke="Black" Margin="0,5,0,0"></Ellipse>
                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="Subscription(sub)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
                                 <Ellipse Grid.Row="5" Grid.Column="0" Width="24" Height="24" Fill="#FFC88AFF" Stroke="Purple" Margin="0,5,0,0"></Ellipse>
-                                <TextBlock Grid.Row="5" Grid.Column="1" Text="Semantic Description(sd)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Text="Semantic Description(smd)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
                                 <Ellipse Grid.Row="6" Grid.Column="0" Width="24" Height="24" Margin="0,5,0,0" Fill="#FFFFC500" Stroke="#FFFF6800"></Ellipse>
                                 <TextBlock Grid.Row="6" Grid.Column="1" Text="Time Series(ts)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
                                 <Ellipse Grid.Row="7" Grid.Column="0" Width="24" Height="24" Margin="0,5,0,0" Fill="#FFFF7CEC" Stroke="#FF004FFF"></Ellipse>
-                                <TextBlock Grid.Row="7" Grid.Column="1" Text="Time Series Content Instance(tscin)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
+                                <TextBlock Grid.Row="7" Grid.Column="1" Text="Time Series Content Instance(tsi)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
                                 <Ellipse Grid.Row="8" Grid.Column="0" Width="24" Height="24" Margin="0,5,0,0" Stroke="#FFB000FF" Fill="#FF00FFB9"></Ellipse>
                                 <TextBlock Grid.Row="8" Grid.Column="1" Text="Group(grp)" VerticalAlignment="Center" Margin="5,5,0,0"></TextBlock>
                             </Grid>

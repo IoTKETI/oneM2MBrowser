@@ -190,7 +190,7 @@ namespace MobiusResourceMonitor_sub
             {
                 this.rootLayout.Background = new SolidColorBrush(Color.FromRgb(200, 138, 255));
                 this.rootLayout.BorderBrush = Brushes.Purple;
-                this.tbkShortTypeName.Text = "sd";
+                this.tbkShortTypeName.Text = "smd";
             }
             else if (ResourceType == "TimeSeries")
             {
@@ -202,7 +202,7 @@ namespace MobiusResourceMonitor_sub
             {
                 this.rootLayout.Background = new SolidColorBrush(Color.FromRgb(255, 124, 236));
                 this.rootLayout.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 79, 255));
-                this.tbkShortTypeName.Text = "tscin";
+                this.tbkShortTypeName.Text = "tsi";
             }
             else if (ResourceType == "Group")
             {
