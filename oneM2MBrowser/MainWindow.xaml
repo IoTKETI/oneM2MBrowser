@@ -55,7 +55,7 @@
                         <ColumnDefinition Width="60"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Resource Path:" Margin="5" VerticalAlignment="Center"></TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="http://203.253.128.161:7579/mobius-yt" x:Name="txtResourceUri"></TextBox>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="" x:Name="txtResourceUri"></TextBox>
                     <Button x:Name="btnAppStart" Grid.Row="0" Grid.Column="2" Margin="5" Content="Start" Click="btnAppStart_Click"></Button>
                     <Button x:Name="btnAppStop" Grid.Row="0" Grid.Column="3" Margin="5" Content="Stop" Click="btnAppStop_Click" IsEnabled="False"></Button>
                 </Grid>

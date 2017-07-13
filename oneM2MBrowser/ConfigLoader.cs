@@ -23,7 +23,7 @@ namespace MobiusResourceMonitor_sub
         private static string confPath = "conf.xml";
         private static XmlDocument doc = null;
 
-        public string ResourcePath = "http://127.0.0.1:7579/mobius-yt/ae";
+        public string ResourcePath = "http://203.253.128.161:7579/mobius-yt/your-ae";
         public string NotificationProtocol = "MQTT";
         public string NotificationIP = "127.0.0.1";
         public string AppName = "";
