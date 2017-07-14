@@ -212,7 +212,7 @@ namespace MobiusResourceMonitor_sub
 
             string[] path_array = topic.Split('/');
 
-            if (path_array.Length == 6)
+            if (path_array.Length == 6 && strMsg.Length > 0)
             {
                 var obj = new MqttNotificationRequest(strMsg);
 
@@ -546,6 +546,26 @@ namespace MobiusResourceMonitor_sub
                 for (int i = index_s; i < str.Length - 1; i++)
                 {
                     if (str[i] == '\"' && str[i + 1] == '>')
+                    {
+                        index_e = i;
+                        break;
+                    }
+                }
+
+                if (index_s > 0 && index_e > 0)
+                {
+                    this.ResourceName = str.Substring(index_s + 5, index_e - index_s - 5);
+                    return;
+                }
+            }
+
+            index_s = str.IndexOf(" rn=\'");
+
+            if (index_s > 0)
+            {
+                for (int i = index_s; i < str.Length - 1; i++)
+                {
+                    if (str[i] == '\'' && str[i + 1] == '>')
                     {
                         index_e = i;
                         break;
