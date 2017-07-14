@@ -210,6 +210,9 @@ namespace MobiusResourceMonitor_sub
             var strMsg = Encoding.UTF8.GetString(e.Message);
             var topic = e.Topic;
 
+            Debug.WriteLine("Topic: " + topic);
+            Debug.WriteLine("Message: " + strMsg);
+
             string[] path_array = topic.Split('/');
 
             if (path_array.Length == 6 && strMsg.Length > 0)
