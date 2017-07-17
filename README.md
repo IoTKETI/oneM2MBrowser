@@ -1,6 +1,6 @@
 # oneM2MBrowser
 
-oneM2MBrowser is a tool for monitoring the oneM2M resources in the Mobius Yellow Turtle([Mobius-yt](https://github.com/IoTKETI/Mobius)). It is working base on oneM2M HTTP RESTful API and MQTT Message. It was designed for helping developer to easily work with Mobius-yt.
+oneM2MBrowser is a tool for monitoring the oneM2M resources in the Mobius Yellow Turtle([Mobius](https://github.com/IoTKETI/Mobius)). It is working base on oneM2M HTTP RESTful API and MQTT Message. It was designed for helping developer to easily work with Mobius.
 
 ## Getting Started
 
