@@ -45,11 +45,10 @@ If you are not familiar with XAML language the Microsoft also provide [Microsoft
 * [Newtonsoft.Json](http://www.newtonsoft.com/json) - The JSON format parser
 * [M2Mqtt](https://www.nuget.org/packages/M2Mqtt/4.3.0) - The MQTT message protocol used
 
+## Document
+If you want more detail, please refer the [guide document](https://github.com/IoTKETI/oneM2MBrowser/raw/master/doc/oneM2M%20Browser%20User%20Guide_v1.2_EN.docx)
+
 ## Authors
 
 * **Chen Nan** - *Initial work* - [coffeenan](https://github.com/coffeenan) (xuehu0000@keti.re.kr)
-
-## License
-
-- [BSD 3-Clause License](http://www.iotocean.org/license/) ([OCEAN](http://www.iotocean.org/main/))
 
