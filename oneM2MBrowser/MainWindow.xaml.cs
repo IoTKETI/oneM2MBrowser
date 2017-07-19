@@ -719,7 +719,7 @@ namespace MobiusResourceMonitor_sub
                             {
                                 SubscriptionObject sub = e.NewResource as SubscriptionObject;
 
-                                if(rm.CreateSubscription(r_path, sub))
+                                if (rm.CreateSubscription(r_path, sub))
                                 {
                                     rm.AddResource(sub.RN, r_path, "23");
                                 }
@@ -733,11 +733,11 @@ namespace MobiusResourceMonitor_sub
                                     rm.AddResource(grp.RN, r_path, "9");
                                 }
                             }
-                            else if(e.NewResource.ResourceType == OneM2MResourceType.TimeSeries)
+                            else if (e.NewResource.ResourceType == OneM2MResourceType.TimeSeries)
                             {
                                 TimeSeriesObject ts = e.NewResource as TimeSeriesObject;
 
-                                if(rm.CreateTimeSeries(r_path, ts))
+                                if (rm.CreateTimeSeries(r_path, ts))
                                 {
                                     rm.AddResource(ts.RN, r_path, "29");
                                 }
@@ -746,12 +746,12 @@ namespace MobiusResourceMonitor_sub
                             {
                                 TimeSeriesContentInstanceObject tsi = e.NewResource as TimeSeriesContentInstanceObject;
 
-                                if(rm.CreateTimeSeriesContentInstance(r_path, tsi))
+                                if (rm.CreateTimeSeriesContentInstance(r_path, tsi))
                                 {
                                     rm.AddResource(tsi.RN, r_path, "30");
                                 }
                             }
-                            else if(e.NewResource.ResourceType == OneM2MResourceType.SemanticDescriptor)
+                            else if (e.NewResource.ResourceType == OneM2MResourceType.SemanticDescriptor)
                             {
                                 SemanticDescriptorObject sd = e.NewResource as SemanticDescriptorObject;
 
@@ -768,8 +768,6 @@ namespace MobiusResourceMonitor_sub
                         this.cavBlockView.Children.Add(resBlock);
                         ucResources.Add(resBlock.ResourcePath, resBlock);
 
-                        //Debug.WriteLine("Resource Path is " + resBlock.ResourcePath);
-
                         if (block.Resource.ResourceStatus == ResourceStatusOption.New)
                         {
                             MoveBlockAsAnimation(resBlock, this.CurrentSourceX, this.CurrentSourceY, block.PositionX, block.PositionY);
@@ -784,6 +782,7 @@ namespace MobiusResourceMonitor_sub
                     if (!blocks.ContainsKey(paths[i]))
                     {
                         var uc = ucResources[paths[i]];
+
                         ucResources.Remove(paths[i]);
                         this.cavBlockView.Children.Remove(uc);
                     }
