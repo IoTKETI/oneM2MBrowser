@@ -46,7 +46,7 @@ If you are not familiar with XAML language the Microsoft also provide [Microsoft
 * [M2Mqtt](https://www.nuget.org/packages/M2Mqtt/4.3.0) - The MQTT message protocol used
 
 ## Document
-If you want more detail, please refer the [guide document](https://github.com/IoTKETI/oneM2MBrowser/raw/master/doc/oneM2M%20Browser%20User%20Guide_v1.2_EN.docx)
+If you want more detail, please refer the [guide document](https://github.com/IoTKETI/oneM2MBrowser/raw/master/doc/oneM2M%20Browser%20User%20Guide_v1.2_EN.pdf)
 
 ## Authors
 
