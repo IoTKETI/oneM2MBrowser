@@ -207,47 +207,53 @@ namespace MobiusResourceMonitor_sub
 
         protected void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            var strMsg = Encoding.UTF8.GetString(e.Message);
-            var topic = e.Topic;
-
-            Debug.WriteLine("Topic: " + topic);
-            Debug.WriteLine("Message: " + strMsg);
-
-            string[] path_array = topic.Split('/');
-
-            if (path_array.Length == 6 && strMsg.Length > 0)
+            try
             {
-                var obj = new MqttNotificationRequest(strMsg);
+                var strMsg = Encoding.UTF8.GetString(e.Message);
+                var topic = e.Topic;
 
-                var id = path_array[3];
-                var ae_id = path_array[4];
-                var res_path = obj.SubscriptionPath;
+                Debug.WriteLine("Topic: " + topic);
+                Debug.WriteLine("Message: " + strMsg);
 
-                var path_arr = res_path.Split('/');
+                string[] path_array = topic.Split('/');
 
-                if (path_arr.Length > 0)
+                if (path_array.Length == 6 && strMsg.Length > 0)
                 {
-                    var noti_name = path_arr[path_arr.Length - 1];
-                    var noti_parent = res_path.Remove(res_path.LastIndexOf("/"), noti_name.Length + 1);
+                    var obj = new MqttNotificationRequest(strMsg);
 
-                    //call handler
-                    Debug.WriteLine("[" + res_path + "] receive a message");
-                    if (this.handler != null)
+                    var id = path_array[3];
+                    var ae_id = path_array[4];
+                    var res_path = obj.SubscriptionPath;
+
+                    var path_arr = res_path.Split('/');
+
+                    if (path_arr.Length > 0)
                     {
-                        this.handler.ReceiveNotificationMessage(obj.ResourceName, noti_parent, obj.ResourceType, obj.Evt);
+                        var noti_name = path_arr[path_arr.Length - 1];
+                        var noti_parent = res_path.Remove(res_path.LastIndexOf("/"), noti_name.Length + 1);
+
+                        //call handler
+                        Debug.WriteLine("[" + res_path + "] receive a message");
+                        if (this.handler != null)
+                        {
+                            this.handler.ReceiveNotificationMessage(obj.ResourceName, noti_parent, obj.ResourceType, obj.Evt);
+                        }
+
+                        var resp_topic = "/oneM2M/resp/" + id + "/" + ae_id + "/xml";
+
+                        var respMsg = new MqttNotificationResponse();
+                        respMsg.ResponseCode = "2000";
+                        respMsg.RequestID = obj.RequestID;
+                        respMsg.Fr = ae_id;
+                        respMsg.To = "";
+                        respMsg.Pc = "";
+
+                        PublishMessage(resp_topic, respMsg.ToXMLString());
                     }
-
-                    var resp_topic = "/oneM2M/resp/" + id + "/" + ae_id + "/xml";
-
-                    var respMsg = new MqttNotificationResponse();
-                    respMsg.ResponseCode = "2000";
-                    respMsg.RequestID = obj.RequestID;
-                    respMsg.Fr = ae_id;
-                    respMsg.To = "";
-                    respMsg.Pc = "";
-
-                    PublishMessage(resp_topic, respMsg.ToXMLString());
                 }
+            }catch(Exception exp)
+            {
+                Debug.WriteLine(exp.Message);
             }
         }
 

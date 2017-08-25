@@ -181,6 +181,9 @@ namespace MobiusResourceMonitor_sub
                         rm.Start();
 
                         command = "working";
+
+                        updateTask = new Task(new Action(UpdateChart));
+                        updateTask.Start();
                     }
                 }
                 catch
@@ -1064,14 +1067,12 @@ namespace MobiusResourceMonitor_sub
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
-                //form.Close();
                 this.grdProgress.Visibility = System.Windows.Visibility.Hidden;
                 this.IsEnabled = true;
             }));
 
-            updateTask = new Task(new Action(UpdateChart));
-            updateTask.Start();
-
+            //updateTask = new Task(new Action(UpdateChart));
+            //updateTask.Start();
         }
 
         private bool IsContains(string content, List<string> filters)
