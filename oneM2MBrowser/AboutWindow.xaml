@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MobiusResourceMonitor_sub"
         mc:Ignorable="d"
-         Title="AboutWindow" Height="387" Width="416" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="Transparent">
+         Title="AboutWindow" Height="414.561" Width="416" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded">
     <Border BorderBrush="LightBlue" BorderThickness="1" CornerRadius="5" Background="White">
         <StackPanel Margin="20" VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
@@ -20,16 +20,19 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Author:" Margin="5"></TextBlock>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="ChenNan" Margin="5"></TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="HomePage:" Margin="5"></TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Version:" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="0.0.0.0" Margin="5" x:Name="tbkVersion"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Author:" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="ChenNan" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="HomePage:" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5">
                     <Hyperlink NavigateUri="http://www.iotocean.org/main"  Click="Hyperlink_Click">http://www.iotocean.org</Hyperlink>
                 </TextBlock>
-                <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
                     <GroupBox.Header>
                         <TextBlock HorizontalAlignment="Center"><Run Text="KETI "/><Run Text="Licence"/></TextBlock>
                     </GroupBox.Header>
@@ -48,7 +51,7 @@
                         </StackPanel>
                     </GroupBox.Content>
                 </GroupBox>
-                <Button x:Name="btnOK" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="80" Height="24" Content="Close" Margin="5" Click="btnOK_Click"></Button>
+                <Button x:Name="btnOK" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Width="80" Height="24" Content="Close" Margin="5" Click="btnOK_Click"></Button>
             </Grid>
         </StackPanel>
     </Border>

@@ -11,6 +11,7 @@
 /**
  * Created by Chen Nan in KETI on 2016-07-28.
  */
+using System.Deployment.Application;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
@@ -51,6 +52,24 @@ namespace MobiusResourceMonitor_sub
         {
             Process.Start(new ProcessStartInfo(@"http://www.apache.org/licenses/LICENSE-2.0"));
             e.Handled = true;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string version = null;
+            try
+            {
+                //// get deployment version
+                version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
+            catch (InvalidDeploymentException)
+            {
+                //// you cannot read publish version when app isn't installed 
+                //// (e.g. during debug)
+                version = "not installed";
+            }
+
+            this.tbkVersion.Text = version;
         }
     }
 }

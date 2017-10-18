@@ -1,0 +1,30 @@
+﻿<Window x:Class="oneM2MBrowser.ResourceSearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:oneM2MBrowser"
+        mc:Ignorable="d"
+        Title="[Resource Searcher]" Height="157.834" Width="300" WindowStartupLocation="CenterScreen" Icon="image/KETI_logo.png" WindowStyle="ToolWindow" Closing="Window_Closing">
+    <Grid>
+        <Grid VerticalAlignment="Center" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Find resource..." HorizontalAlignment="Center" Margin="5"></TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Key Word:" VerticalAlignment="Center" Margin="5"></TextBlock>
+            <TextBox x:Name="txtKeyWord" Grid.Row="1" Grid.Column="1" Margin="5"></TextBox>
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnFind" Content="Find" Width="80" Height="26" Margin="5" Click="btnFind_Click"></Button>
+                <Button x:Name="btnCancel" Content="Cancel" Width="80" Height="26" Margin="5" Click="btnCancel_Click"></Button>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Window>

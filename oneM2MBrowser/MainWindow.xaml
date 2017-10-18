@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MobiusResourceMonitor_sub.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       Title="[oneM2M Browser]" Height="800" Width="1200" MinHeight="800" MinWidth="1200" WindowStartupLocation="CenterScreen" FontFamily="Microsoft YaHei UI" Icon="image/KETI_logo.png" Closing="Window_Closing" Loaded="Window_Loaded" Background="White">
+       Title="[oneM2M Browser]" Height="800" Width="1200" MinHeight="800" MinWidth="1200" WindowStartupLocation="CenterScreen" FontFamily="Microsoft YaHei UI" Icon="image/KETI_logo.png" Closing="Window_Closing" Loaded="Window_Loaded" Background="White" KeyDown="Window_KeyDown">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -12,7 +12,10 @@
             <DockPanel>
                 <Menu DockPanel.Dock="Top">
                     <!--<MenuItem Header="_File"  Width="60" />-->
-                    <MenuItem Header="_Help"  Width="60"  Height="22">
+                    <MenuItem Header="_Tool" Width="60" Height="22">
+                        <MenuItem Header="_Search(Ctrl+F)" x:Name="mnSearch" Click="mnSearch_Click"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="_Help" Width="60" Height="22">
                         <MenuItem Header="_About" x:Name="mnAbout" Click="mnAbout_Click" />
                     </MenuItem>
                 </Menu>
@@ -44,7 +47,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Border CornerRadius="5" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Margin="5">
+                <Border CornerRadius="5" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="5">
                     <Image x:Name="imgKeti" Source="image/KETI_logo.png" Width="150" Height="100" Margin="5"></Image>
                 </Border>
                 <Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
@@ -59,18 +62,6 @@
                     <Button x:Name="btnAppStart" Grid.Row="0" Grid.Column="2" Margin="5" Content="Start" Click="btnAppStart_Click"></Button>
                     <Button x:Name="btnAppStop" Grid.Row="0" Grid.Column="3" Margin="5" Content="Stop" Click="btnAppStop_Click" IsEnabled="False"></Button>
                 </Grid>
-                <!--
-                <Grid Grid.Row="1" Grid.Column="1" Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="80"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,5,5,5" Text="MQTT Broker IP:"></TextBlock>
-                    <TextBox x:Name="txtIP" Grid.Row="0" Grid.Column="1" Margin="5"></TextBox>
-                    <Button x:Name="btnApply" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Content="Apply" Margin="5,0,5,0" Click="btnApply_Click"/>
-                </Grid>
-                -->
                 <Grid Grid.Row="1" Grid.Column="1" Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>

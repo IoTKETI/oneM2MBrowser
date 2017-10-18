@@ -11,6 +11,7 @@
 /**
  * Created by Chen Nan in KETI on 2016-07-28.
  */
+using oneM2MBrowser;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -45,6 +47,8 @@ namespace MobiusResourceMonitor_sub
 
         private Button btnDecoding;
         private ucResource ucRSelected;
+
+        private ResourceSearchWindow winSearcher = new ResourceSearchWindow();
 
         private ResourceManager rm;
 
@@ -89,7 +93,11 @@ namespace MobiusResourceMonitor_sub
 
             Loader = new ConfigLoader();
             Loader.initConf();
+
+            winSearcher.OnSearching += Searcher_OnSearching;
         }
+
+        #region Event Handler
 
         private void btnAppStart_Click(object sender, RoutedEventArgs e)
         {
@@ -384,6 +392,105 @@ namespace MobiusResourceMonitor_sub
 
             lines.Add(new LineObject() { StartX = x1, StartY = y1, EndX = x2, EndY = y2 });
         }
+
+        private void mnAbout_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow mForm = new AboutWindow();
+            mForm.ShowDialog();
+        }
+
+        private void scrvDisplay_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            this.CurrentSourceX += e.HorizontalChange;
+            this.CurrentSourceY += e.VerticalChange;
+
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Canvas.SetLeft(this.imgNetwork, this.CurrentSourceX);
+                Canvas.SetTop(this.imgNetwork, this.CurrentSourceY);
+            }));
+        }
+
+        private void rdbtnJson_Checked(object sender, RoutedEventArgs e)
+        {
+            this.contentType = "Json";
+
+            foreach (string key in ucResources.Keys)
+            {
+                ucResources[key].BodyType = this.contentType;
+            }
+
+            if (this.ucRSelected != null)
+            {
+                ucRSelected.RequestResourceInfo();
+            }
+        }
+
+        private void rdbtnXML_Checked(object sender, RoutedEventArgs e)
+        {
+            this.contentType = "XML";
+
+            foreach (string key in ucResources.Keys)
+            {
+                ucResources[key].BodyType = this.contentType;
+            }
+
+            if (this.ucRSelected != null)
+            {
+                ucRSelected.RequestResourceInfo();
+            }
+        }
+
+        private void slZoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.tbkZoom.Text = Math.Round(this.slZoom.Value) + @"%";
+
+                this.stLineView.CenterX = CavWidth / 2;
+
+                this.stBlockView.CenterX = CavWidth / 2;
+
+                this.stSourceView.CenterX = CavWidth / 2;
+
+                this.stLineView.ScaleX = this.slZoom.Value / 100;
+                this.stLineView.ScaleY = this.slZoom.Value / 100;
+
+                this.stBlockView.ScaleX = this.slZoom.Value / 100;
+                this.stBlockView.ScaleY = this.slZoom.Value / 100;
+
+                this.stSourceView.ScaleX = this.slZoom.Value / 100;
+                this.stSourceView.ScaleY = this.slZoom.Value / 100;
+            }));
+        }
+
+        private void mnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (!winSearcher.IsVisible)
+            {
+                winSearcher.Show();
+            }
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                if (!winSearcher.IsVisible)
+                {
+                    winSearcher.Show();
+                }
+            }
+        }
+
+        private void Searcher_OnSearching(object sender, SearchResourceEventArgs e)
+        {
+            //Search procee need be impeletemented
+        }
+
+        #endregion
+
+        #region Function
 
         private void CaculatorBlockAndLine(BlockObject rootBlock) {
 
@@ -932,6 +1039,8 @@ namespace MobiusResourceMonitor_sub
             catch(WebException exp)
             {
                 bResult = false;
+
+                Debug.WriteLine(exp.Message);
             }
 
             return bResult;
@@ -1217,76 +1326,9 @@ namespace MobiusResourceMonitor_sub
             }));
         }
 
-        private void mnAbout_Click(object sender, RoutedEventArgs e)
-        {
-            AboutWindow mForm = new AboutWindow();
-            mForm.ShowDialog();
-        }
+        #endregion
 
-        private void scrvDisplay_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            this.CurrentSourceX += e.HorizontalChange;
-            this.CurrentSourceY += e.VerticalChange;
 
-            this.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Canvas.SetLeft(this.imgNetwork, this.CurrentSourceX);
-                Canvas.SetTop(this.imgNetwork, this.CurrentSourceY);
-            }));
-        }
-
-        private void rdbtnJson_Checked(object sender, RoutedEventArgs e)
-        {
-            this.contentType = "Json";
-
-            foreach(string key in ucResources.Keys)
-            {
-                ucResources[key].BodyType = this.contentType;
-            }
-
-            if(this.ucRSelected != null)
-            {
-                ucRSelected.RequestResourceInfo();
-            }
-        }
-
-        private void rdbtnXML_Checked(object sender, RoutedEventArgs e)
-        {
-            this.contentType = "XML";
-
-            foreach (string key in ucResources.Keys)
-            {
-                ucResources[key].BodyType = this.contentType;
-            }
-
-            if (this.ucRSelected != null)
-            {
-                ucRSelected.RequestResourceInfo();
-            }
-        }
-
-        private void slZoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            this.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                this.tbkZoom.Text = Math.Round(this.slZoom.Value) + @"%";
-
-                this.stLineView.CenterX = CavWidth / 2;
-
-                this.stBlockView.CenterX = CavWidth / 2;
-
-                this.stSourceView.CenterX = CavWidth / 2;
-
-                this.stLineView.ScaleX = this.slZoom.Value / 100;
-                this.stLineView.ScaleY = this.slZoom.Value / 100;
-
-                this.stBlockView.ScaleX = this.slZoom.Value / 100;
-                this.stBlockView.ScaleY = this.slZoom.Value / 100;
-
-                this.stSourceView.ScaleX = this.slZoom.Value / 100;
-                this.stSourceView.ScaleY = this.slZoom.Value / 100;
-            }));
-        }
     }
 
     public enum ResourceEffectiveResult

@@ -171,6 +171,9 @@
     <Compile Include="NotificaitonReceiver.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="ResourceObject.cs" />
+    <Compile Include="ResourceSearchWindow.xaml.cs">
+      <DependentUpon>ResourceSearchWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SemanticDisplayWindow.xaml.cs">
       <DependentUpon>SemanticDisplayWindow.xaml</DependentUpon>
     </Compile>
@@ -233,6 +236,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ResourceSearchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SemanticDisplayWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
