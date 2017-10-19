@@ -279,14 +279,26 @@ namespace MobiusResourceMonitor_sub
         {
             this.tbkNew.Visibility = Visibility.Hidden;
         }
+
         public void ShowOldTag()
         {
             this.tbkOld.Visibility = Visibility.Visible;
             this.tbkNew.Visibility = Visibility.Hidden;
         }
+
         public void HideOldTag()
         {
             this.tbkOld.Visibility = Visibility.Hidden;
+        }
+
+        public void ShowSearchArrow()
+        {
+            this.imgArrow.Visibility = Visibility.Visible;
+        }
+
+        public void HideSearchArrow()
+        {
+            this.imgArrow.Visibility = Visibility.Hidden;
         }
 
         public void BinkBlock()

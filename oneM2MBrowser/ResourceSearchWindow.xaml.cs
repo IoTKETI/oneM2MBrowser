@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,8 +21,10 @@ namespace oneM2MBrowser
     public partial class ResourceSearchWindow : Window
     {
         public delegate void SearchResourceEventHandler(object sender, SearchResourceEventArgs e);
+        public delegate void SearchResourceFinishEventHandler(object sender, SearchResouceFinishEventArgs e);
 
         public SearchResourceEventHandler OnSearching { get; set; }
+        public SearchResourceFinishEventHandler OnSearchFinished { get; set; }
 
         private void RaiseSearchResourceEvent(string key)
         {
@@ -29,6 +32,15 @@ namespace oneM2MBrowser
             {
                 SearchResourceEventArgs e = new SearchResourceEventArgs(key);
                 OnSearching(this, e);
+            }
+        }
+
+        private void RaiseSearchResourceFinishEvent()
+        {
+            if(OnSearchFinished != null)
+            {
+                SearchResouceFinishEventArgs e = new SearchResouceFinishEventArgs();
+                OnSearchFinished(this, e);
             }
         }
 
@@ -42,6 +54,8 @@ namespace oneM2MBrowser
             e.Cancel = true;
 
             this.Hide();
+
+            RaiseSearchResourceFinishEvent();
         }
 
         private void btnFind_Click(object sender, RoutedEventArgs e)
@@ -55,6 +69,8 @@ namespace oneM2MBrowser
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
+
+            RaiseSearchResourceFinishEvent();
         }
     }
 
@@ -66,5 +82,10 @@ namespace oneM2MBrowser
         {
             this.SearchKey = key;
         }
+    }
+
+    public class SearchResouceFinishEventArgs: EventArgs
+    {
+
     }
 }

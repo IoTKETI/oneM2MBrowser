@@ -43,6 +43,8 @@ namespace MobiusResourceMonitor_sub
 
         private Dictionary<string, ucResource> ucResources = new Dictionary<string, ucResource>();
         private Dictionary<string, BlockObject> blocks = new Dictionary<string, BlockObject>();
+
+        private List<BlockObject> searchResult = new List<BlockObject>();
         private List<LineObject> lines = new List<LineObject>();
 
         private Button btnDecoding;
@@ -85,6 +87,9 @@ namespace MobiusResourceMonitor_sub
         private string brokerIP = "";
         private string origin = "";
 
+        private string searchKey = "";
+        private int currentSearchIndex = 0;
+
         #endregion
 
         public MainWindow()
@@ -95,6 +100,7 @@ namespace MobiusResourceMonitor_sub
             Loader.initConf();
 
             winSearcher.OnSearching += Searcher_OnSearching;
+            winSearcher.OnSearchFinished += Searcher_OnSearchFinish;
         }
 
         #region Event Handler
@@ -299,42 +305,6 @@ namespace MobiusResourceMonitor_sub
             //this.txtIP.Text = Loader.GetNotificationIP();
         }
 
-        private void SaveConfigFile()
-        {
-            if (this.txtResourceUri.Text.Trim().Length > 0)
-            {
-                Loader.SetResourcePath(this.txtResourceUri.Text);
-            }
-
-            if (this.brokerIP.Length > 0)
-            {
-                Loader.SetNotificationIP(this.brokerIP);
-            }
-
-            Loader.initConf();
-
-            this.txtResourceUri.Text = Loader.ResourcePath;
-            this.brokerIP = Loader.GetNotificationIP();
-
-            //MessageBox.Show("Configuration successfully!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private string RandomString(int length)
-        {
-            string str = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-            var random = new Random(Guid.NewGuid().GetHashCode());
-
-            var sb = new StringBuilder();
-
-            for (int i = 0; i < length; i++)
-            {
-                int num = random.Next(str.Length);
-                sb.Append(str.Substring(num, 1));
-            }
-            return sb.ToString();
-        }
-
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
             SaveConfigFile();
@@ -447,20 +417,19 @@ namespace MobiusResourceMonitor_sub
             {
                 this.tbkZoom.Text = Math.Round(this.slZoom.Value) + @"%";
 
+                double zoom = this.slZoom.Value / 100;
+
                 this.stLineView.CenterX = CavWidth / 2;
+                this.stLineView.ScaleX = zoom;
+                this.stLineView.ScaleY = zoom;
 
                 this.stBlockView.CenterX = CavWidth / 2;
+                this.stBlockView.ScaleX = zoom;
+                this.stBlockView.ScaleY = zoom;
 
                 this.stSourceView.CenterX = CavWidth / 2;
-
-                this.stLineView.ScaleX = this.slZoom.Value / 100;
-                this.stLineView.ScaleY = this.slZoom.Value / 100;
-
-                this.stBlockView.ScaleX = this.slZoom.Value / 100;
-                this.stBlockView.ScaleY = this.slZoom.Value / 100;
-
-                this.stSourceView.ScaleX = this.slZoom.Value / 100;
-                this.stSourceView.ScaleY = this.slZoom.Value / 100;
+                this.stSourceView.ScaleX = zoom;
+                this.stSourceView.ScaleY = zoom;
             }));
         }
 
@@ -486,6 +455,71 @@ namespace MobiusResourceMonitor_sub
         private void Searcher_OnSearching(object sender, SearchResourceEventArgs e)
         {
             //Search procee need be impeletemented
+            for (int i = 0; i < searchResult.Count; i++)
+            {
+                ucResources[searchResult[i].Resource.ResourcePath].HideSearchArrow();
+            }
+
+            if (e.SearchKey == this.searchKey)
+            {
+                currentSearchIndex++;
+            }
+            else
+            {
+                clearSearchResult();
+
+                this.searchKey = e.SearchKey;
+
+                var keys = blocks.Keys;
+
+                foreach (string key in keys)
+                {
+                    BlockObject blo = blocks[key];
+
+                    if (blo.Resource.ResourceName.Contains(this.searchKey))
+                    {
+                        searchResult.Add(blo);
+                    }
+                }
+
+                currentSearchIndex = 0;
+            }
+
+            //move to block
+            if (currentSearchIndex >= searchResult.Count)
+            {
+                currentSearchIndex = 0;
+            }
+
+            var currentScrollPositionX = scrvDisplay.HorizontalOffset;
+            var currentScrollPositionY = scrvDisplay.VerticalOffset;
+
+            var point = new Point(currentScrollPositionX, currentScrollPositionY);
+
+            if (searchResult.Count > 0)
+            {
+                var targetPosition = ucResources[searchResult[currentSearchIndex].Resource.ResourcePath].TransformToVisual(scrvDisplay).Transform(point);
+                scrvDisplay.ScrollToHorizontalOffset(targetPosition.X - (this.scrvDisplay.ActualHeight - BlockHeight) / 2);
+                scrvDisplay.ScrollToVerticalOffset(targetPosition.Y - (this.scrvDisplay.ActualHeight - BlockHeight) / 2);
+
+                ucResources[searchResult[currentSearchIndex].Resource.ResourcePath].ShowSearchArrow();
+            }
+        }
+
+        private void Searcher_OnSearchFinish(object sender, SearchResouceFinishEventArgs e)
+        {
+            clearSearchResult();
+
+            this.searchKey = "";
+        }
+
+        private void clearSearchResult()
+        {
+            for (int i = 0; i < searchResult.Count; i++)
+            {
+                ucResources[searchResult[i].Resource.ResourcePath].HideSearchArrow();
+            }
+            searchResult.Clear();
         }
 
         #endregion
@@ -505,6 +539,44 @@ namespace MobiusResourceMonitor_sub
             this.CavHeight = StartY + NodeDepthLevel * (BlockHeight + BlockVerticalSpace) + 50 ;
             this.CavWidth = StartX + NodeWidthLevel * (BlockWidth + BlockHorizontalSpace);
         }
+
+
+        private void SaveConfigFile()
+        {
+            if (this.txtResourceUri.Text.Trim().Length > 0)
+            {
+                Loader.SetResourcePath(this.txtResourceUri.Text);
+            }
+
+            if (this.brokerIP.Length > 0)
+            {
+                Loader.SetNotificationIP(this.brokerIP);
+            }
+
+            Loader.initConf();
+
+            this.txtResourceUri.Text = Loader.ResourcePath;
+            this.brokerIP = Loader.GetNotificationIP();
+
+            //MessageBox.Show("Configuration successfully!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private string RandomString(int length)
+        {
+            string str = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+            var random = new Random(Guid.NewGuid().GetHashCode());
+
+            var sb = new StringBuilder();
+
+            for (int i = 0; i < length; i++)
+            {
+                int num = random.Next(str.Length);
+                sb.Append(str.Substring(num, 1));
+            }
+            return sb.ToString();
+        }
+
 
         private BlockObject ChildSeek(BlockObject node)
         {

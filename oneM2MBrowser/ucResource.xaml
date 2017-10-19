@@ -103,6 +103,7 @@
                     <ScaleTransform x:Name="scRectCheckAnim" CenterX="60" CenterY="20" ScaleX="1" ScaleY="1"></ScaleTransform>
                 </Rectangle.RenderTransform>
             </Rectangle>
+            <Image Width="20" Height="20" Source="image/Down-Arrow.png" Margin="49,-14,49,32" x:Name="imgArrow" Visibility="Hidden"></Image>
         </Grid>
     </Border>
 </UserControl>
