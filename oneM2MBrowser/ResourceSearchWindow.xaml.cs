@@ -26,11 +26,11 @@ namespace oneM2MBrowser
         public SearchResourceEventHandler OnSearching { get; set; }
         public SearchResourceFinishEventHandler OnSearchFinished { get; set; }
 
-        private void RaiseSearchResourceEvent(string key)
+        private void RaiseSearchResourceEvent(string key, SearchType ty)
         {
             if (OnSearching != null)
             {
-                SearchResourceEventArgs e = new SearchResourceEventArgs(key);
+                SearchResourceEventArgs e = new SearchResourceEventArgs(key, ty);
                 OnSearching(this, e);
             }
         }
@@ -62,30 +62,37 @@ namespace oneM2MBrowser
         {
             if(this.txtKeyWord.Text.Trim().Length > 0)
             {
-                RaiseSearchResourceEvent(this.txtKeyWord.Text);
+                RaiseSearchResourceEvent(this.txtKeyWord.Text, SearchType.Next);
             }
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
-
-            RaiseSearchResourceFinishEvent();
+            if (this.txtKeyWord.Text.Trim().Length > 0)
+            {
+                RaiseSearchResourceEvent(this.txtKeyWord.Text, SearchType.Previous);
+            }
         }
     }
 
     public class SearchResourceEventArgs : EventArgs
     {
-        public string SearchKey { get; set; } 
+        public string SearchKey { get; set; }
+        public SearchType Type { get; set; }
 
-        public SearchResourceEventArgs(string key)
+        public SearchResourceEventArgs(string key, SearchType ty)
         {
             this.SearchKey = key;
+            this.Type = ty;
         }
     }
 
     public class SearchResouceFinishEventArgs: EventArgs
     {
+    }
 
+    public enum SearchType
+    {
+        Next, Previous
     }
 }

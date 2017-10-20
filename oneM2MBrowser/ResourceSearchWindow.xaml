@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:oneM2MBrowser"
         mc:Ignorable="d"
-        Title="[Resource Searcher]" Height="157.834" Width="300" WindowStartupLocation="CenterScreen" Icon="image/KETI_logo.png" WindowStyle="ToolWindow" Closing="Window_Closing">
+        Title="[Resource Searcher]" Height="149.014" Width="300" WindowStartupLocation="CenterScreen" Icon="image/KETI_logo.png" WindowStyle="ToolWindow" Closing="Window_Closing">
     <Grid>
-        <Grid VerticalAlignment="Center" Margin="5">
+        <Grid Margin="5">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -21,8 +21,8 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Key Word:" VerticalAlignment="Center" Margin="5"></TextBlock>
             <TextBox x:Name="txtKeyWord" Grid.Row="1" Grid.Column="1" Margin="5"></TextBox>
             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="btnFind" Content="Find" Width="80" Height="26" Margin="5" Click="btnFind_Click"></Button>
-                <Button x:Name="btnCancel" Content="Cancel" Width="80" Height="26" Margin="5" Click="btnCancel_Click"></Button>
+                <Button x:Name="btnFind" Content="Find/Next" Width="80" Height="26" Margin="5" Click="btnFind_Click"></Button>
+                <Button x:Name="btnPrevious" Content="Previous" Width="80" Height="26" Margin="5" Click="btnPrevious_Click"></Button>
             </StackPanel>
         </Grid>
         

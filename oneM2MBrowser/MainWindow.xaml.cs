@@ -460,9 +460,13 @@ namespace MobiusResourceMonitor_sub
                 ucResources[searchResult[i].Resource.ResourcePath].HideSearchArrow();
             }
 
-            if (e.SearchKey == this.searchKey)
+            if (e.SearchKey == this.searchKey && e.Type == SearchType.Next)
             {
                 currentSearchIndex++;
+            }
+            else if (e.SearchKey == this.searchKey && e.Type == SearchType.Previous)
+            {
+                currentSearchIndex--;
             }
             else
             {
@@ -489,6 +493,10 @@ namespace MobiusResourceMonitor_sub
             if (currentSearchIndex >= searchResult.Count)
             {
                 currentSearchIndex = 0;
+            }
+            else if (currentSearchIndex < 0)
+            {
+                currentSearchIndex = searchResult.Count - 1;
             }
 
             var currentScrollPositionX = scrvDisplay.HorizontalOffset;
