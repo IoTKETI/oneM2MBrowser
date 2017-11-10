@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,7 +29,7 @@ namespace MobiusResourceMonitor_sub
     /// <summary>
     /// ucResource.xaml 的交互逻辑
     /// </summary>
-    public partial class ucResource : UserControl
+    public partial class ucResource : UserControl, IGetResourceInfoCallback
     {
         public string ResourceName
         {
@@ -212,6 +213,7 @@ namespace MobiusResourceMonitor_sub
             }
         }
 
+        /*
         private string getResourceInfo()
         {
             string strResult = "";
@@ -243,6 +245,26 @@ namespace MobiusResourceMonitor_sub
             }
 
             return strResult;
+        }
+        */
+
+        private void getResourceInfo()
+        {
+            //string strResult = "";
+            try
+            {
+                string strUrl = RootUrl + ResourcePath;
+
+                rm.GetResourceInfoAsync(strUrl, BodyType, this);
+
+            }
+            catch (WebException exp)
+            {
+                Debug.WriteLine(exp.Message);
+                MessageBox.Show("Can not get resource information from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            //return strResult;
         }
 
         private string FormatJson(string json)
@@ -318,13 +340,15 @@ namespace MobiusResourceMonitor_sub
 
         public void RequestResourceInfo()
         {
-            string msg = getResourceInfo();
+            //string msg = getResourceInfo();
 
-            RaiseRetriveResourceEvent(msg);
+            getResourceInfo();
 
-            this.tbkNew.Visibility = System.Windows.Visibility.Hidden;
-            this.isChecked = true;
-            this.sbCheckAnimi.Begin();
+            //RaiseRetriveResourceEvent(msg);
+
+            //this.tbkNew.Visibility = System.Windows.Visibility.Hidden;
+            //this.isChecked = true;
+            //this.sbCheckAnimi.Begin();
         }
 
         private void rootLayout_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -527,6 +551,37 @@ namespace MobiusResourceMonitor_sub
                     RaiseCreateResourceEvent(form.SD);
                 }
             }
+        }
+
+        public void GetResourceInfoFinish(string msg)
+        {
+            string strResult = "";
+            try
+            {
+                if (BodyType == "XML")
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(msg);
+
+                    msg = Beautify(doc);
+                }
+                else
+                {
+                    msg = FormatJson(msg);
+                }
+
+                strResult = msg;
+
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    RaiseRetriveResourceEvent(strResult);
+
+                    this.tbkNew.Visibility = System.Windows.Visibility.Hidden;
+                    this.isChecked = true;
+                    this.sbCheckAnimi.Begin();
+                }));
+            }
+            catch { }
         }
     }
 

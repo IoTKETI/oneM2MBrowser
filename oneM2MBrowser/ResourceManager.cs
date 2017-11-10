@@ -25,6 +25,11 @@ using System.Xml;
 
 namespace MobiusResourceMonitor_sub
 {
+    public interface IGetResourceInfoCallback
+    {
+        void GetResourceInfoFinish(string msg);
+    }
+
     public class ResourceManager : INotificaitonReceiver
     {
         private const int MaxContentInstanceCount = 25;
@@ -1757,7 +1762,7 @@ namespace MobiusResourceMonitor_sub
                 }
                 req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
                 req.Headers.Add("X-M2M-Origin", origin);
-                req.Timeout = 2000;
+                req.Timeout = 10000;
 
                 HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
 
@@ -1765,7 +1770,6 @@ namespace MobiusResourceMonitor_sub
                 {
                     StreamReader sr = new StreamReader(resp.GetResponseStream());
                     string content = sr.ReadToEnd();
-
 
                     strResult = content;
                 }
@@ -1777,6 +1781,55 @@ namespace MobiusResourceMonitor_sub
             }
 
             return strResult;
+        }
+
+        public void GetResourceInfoAsync(string resc_path, string body_type, IGetResourceInfoCallback callback)
+        {
+            Task task = new Task(() =>
+            {
+                try
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(this.rootUrl).Append(resc_path);
+
+                    string strUrl = sb.ToString();
+                    Debug.WriteLine("Request URL: [GET] " + strUrl);
+
+                    HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+                    req.Method = "GET";
+                    if (body_type == "XML")
+                    {
+                        req.Accept = "application/xml";
+                    }
+                    else
+                    {
+                        req.Accept = "application/json";
+                    }
+                    req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
+                    req.Headers.Add("X-M2M-Origin", origin);
+                    req.Timeout = 10000;
+
+                    var resp = (HttpWebResponse)req.GetResponse();
+
+                    if (resp.StatusCode == HttpStatusCode.OK)
+                    {
+                        StreamReader sr = new StreamReader(resp.GetResponseStream());
+                        string content = sr.ReadToEnd();
+
+                        if (callback != null)
+                        {
+                            callback.GetResourceInfoFinish(content);
+                        }
+                    }
+                }
+                catch (WebException exp)
+                {
+                    throw exp;
+                    //MessageBox.Show("Can not get resource information from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            });
+
+            task.Start();
         }
 
         public bool DeleteResource(string resc_path)

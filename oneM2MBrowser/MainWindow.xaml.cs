@@ -548,7 +548,6 @@ namespace MobiusResourceMonitor_sub
             this.CavWidth = StartX + NodeWidthLevel * (BlockWidth + BlockHorizontalSpace);
         }
 
-
         private void SaveConfigFile()
         {
             if (this.txtResourceUri.Text.Trim().Length > 0)
@@ -584,7 +583,6 @@ namespace MobiusResourceMonitor_sub
             }
             return sb.ToString();
         }
-
 
         private BlockObject ChildSeek(BlockObject node)
         {
