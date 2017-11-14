@@ -58,7 +58,7 @@ namespace MobiusResourceMonitor_sub
 
         private bool isActived = false;
         private bool isStarted = false;
-        
+
         private static double StartX = 50;
         private static double StartY = 100;
         private static double BlockWidth = 140;
@@ -165,7 +165,8 @@ namespace MobiusResourceMonitor_sub
                                     MessageBox.Show("It is not a effective ACP...!", "Limitaion", MessageBoxButton.OK, MessageBoxImage.Error);
                                     return;
                                 }
-                            } else
+                            }
+                            else
                             {
                                 return;
                             }
@@ -392,6 +393,11 @@ namespace MobiusResourceMonitor_sub
 
             if (this.ucRSelected != null)
             {
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.txtMsgShow.Text = "Loading...";
+                }));
+
                 ucRSelected.RequestResourceInfo();
             }
         }
@@ -407,6 +413,11 @@ namespace MobiusResourceMonitor_sub
 
             if (this.ucRSelected != null)
             {
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.txtMsgShow.Text = "Loading...";
+                }));
+
                 ucRSelected.RequestResourceInfo();
             }
         }
@@ -534,7 +545,8 @@ namespace MobiusResourceMonitor_sub
 
         #region Function
 
-        private void CaculatorBlockAndLine(BlockObject rootBlock) {
+        private void CaculatorBlockAndLine(BlockObject rootBlock)
+        {
 
             lines.Clear();
             blocks.Clear();
@@ -544,7 +556,7 @@ namespace MobiusResourceMonitor_sub
 
             ChildSeek(rootBlock);
 
-            this.CavHeight = StartY + NodeDepthLevel * (BlockHeight + BlockVerticalSpace) + 50 ;
+            this.CavHeight = StartY + NodeDepthLevel * (BlockHeight + BlockVerticalSpace) + 50;
             this.CavWidth = StartX + NodeWidthLevel * (BlockWidth + BlockHorizontalSpace);
         }
 
@@ -587,7 +599,7 @@ namespace MobiusResourceMonitor_sub
         private BlockObject ChildSeek(BlockObject node)
         {
             BlockObject block = null;
-            if (node != null && node.Resource!= null)
+            if (node != null && node.Resource != null)
             {
                 if (node.Parent == null)
                 {
@@ -609,7 +621,7 @@ namespace MobiusResourceMonitor_sub
 
                         node.Childrens[i].PositionX = StartX + (node.Childrens[i].Resource.Level - 1) * (BlockWidth + BlockHorizontalSpace);
 
-                        if(node.Childrens[i].Resource.Level > NodeWidthLevel)
+                        if (node.Childrens[i].Resource.Level > NodeWidthLevel)
                         {
                             NodeWidthLevel = node.Childrens[i].Resource.Level;
                         }
@@ -950,6 +962,14 @@ namespace MobiusResourceMonitor_sub
                             }
                         };
 
+                        resBlock.MouseLeftButtonUp += (s, e) =>
+                        {
+                            this.Dispatcher.Invoke(new Action(() =>
+                            {
+                                this.txtMsgShow.Text = "Loading...";
+                            }));
+                        };
+
                         Canvas.SetLeft(resBlock, block.PositionX);
                         Canvas.SetTop(resBlock, block.PositionY);
 
@@ -978,7 +998,7 @@ namespace MobiusResourceMonitor_sub
             }));
         }
 
-        private void MoveBlockAsAnimation(ucResource resc,double sx, double sy, double ex, double ey)
+        private void MoveBlockAsAnimation(ucResource resc, double sx, double sy, double ex, double ey)
         {
             var sb = new Storyboard();
             sb.FillBehavior = FillBehavior.Stop;
@@ -1011,7 +1031,8 @@ namespace MobiusResourceMonitor_sub
             if (!Resources.Contains("rectAnimation"))
             {
                 Resources.Add("rectAnimation", sb);
-            } else
+            }
+            else
             {
                 Resources.Remove("rectAnimation");
             }
@@ -1021,7 +1042,7 @@ namespace MobiusResourceMonitor_sub
 
         private void UnCheckOtherResources(ucResource current)
         {
-            foreach(var key in ucResources.Keys)
+            foreach (var key in ucResources.Keys)
             {
                 if (current != ucResources[key])
                 {
@@ -1068,7 +1089,7 @@ namespace MobiusResourceMonitor_sub
                 }
                 resp.Close();
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 Debug.WriteLine(exp.Message);
                 bResult = false;
@@ -1114,7 +1135,7 @@ namespace MobiusResourceMonitor_sub
                 }
                 resp.Close();
             }
-            catch(WebException exp)
+            catch (WebException exp)
             {
                 bResult = false;
 
@@ -1224,7 +1245,7 @@ namespace MobiusResourceMonitor_sub
                 }
                 resp.Close();
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 Debug.WriteLine(exp.Message);
                 bResult = false;
@@ -1277,7 +1298,7 @@ namespace MobiusResourceMonitor_sub
 
             return isResult;
         }
-        
+
         private BlockObject MakeTree(List<ResourceObject> totalResources)
         {
             var rootBlock = new BlockObject();
@@ -1300,14 +1321,14 @@ namespace MobiusResourceMonitor_sub
                 {
                     var rescList = new List<ResourceObject>();
                     for (int j = 0; j < totalResources.Count; j++)
-                    {                       
+                    {
                         if (totalResources[j].Level == i)
                         {
                             rescList.Add(totalResources[j]);
                         }
                     }
 
-                    rescMetrix[i-1] = rescList;
+                    rescMetrix[i - 1] = rescList;
                 }
 
                 List<BlockObject> blockList = null;
@@ -1349,7 +1370,7 @@ namespace MobiusResourceMonitor_sub
                                     temp.Add(block);
                                 }
                             }
-                        }                                   
+                        }
                     }
 
                     blockList = temp;
@@ -1357,7 +1378,7 @@ namespace MobiusResourceMonitor_sub
             }
             return rootBlock;
         }
-        
+
         private bool isOverMaxCinNum(List<BlockObject> childrens)
         {
             int count = 0;
@@ -1405,8 +1426,6 @@ namespace MobiusResourceMonitor_sub
         }
 
         #endregion
-
-
     }
 
     public enum ResourceEffectiveResult

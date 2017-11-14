@@ -16,7 +16,6 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,7 +26,7 @@ using System.Xml;
 namespace MobiusResourceMonitor_sub
 {
     /// <summary>
-    /// ucResource.xaml 的交互逻辑
+    /// ucResource.xaml UI logic
     /// </summary>
     public partial class ucResource : UserControl, IGetResourceInfoCallback
     {
@@ -100,7 +99,7 @@ namespace MobiusResourceMonitor_sub
 
         private void RaiseDeleteResourceEvent()
         {
-            if(DeleteResourceCompleted != null)
+            if (DeleteResourceCompleted != null)
             {
                 DeleteResourceEventArgs e = new DeleteResourceEventArgs();
                 DeleteResourceCompleted(this, e);
@@ -109,7 +108,7 @@ namespace MobiusResourceMonitor_sub
 
         public void RaiseCreateResourceEvent(OneM2MResource resc)
         {
-            if(CreateResourceCompleted != null)
+            if (CreateResourceCompleted != null)
             {
                 CreateResourceEventArgs e = new CreateResourceEventArgs(resc);
                 CreateResourceCompleted(this, e);
@@ -212,41 +211,6 @@ namespace MobiusResourceMonitor_sub
                 this.tbkShortTypeName.Text = "grp";
             }
         }
-
-        /*
-        private string getResourceInfo()
-        {
-            string strResult = "";
-            try
-            {
-                string strUrl = RootUrl + ResourcePath;
-
-                string content = rm.GetResourceInfo(strUrl, BodyType);
-
-                if (BodyType == "XML")
-                {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(content);
-
-                    content = Beautify(doc);
-                }
-                else
-                {
-                    content = FormatJson(content);
-                }
-
-                strResult = content;
-
-            }
-            catch (WebException exp)
-            {
-                Debug.WriteLine(exp.Message);
-                MessageBox.Show("Can not get resource information from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            return strResult;
-        }
-        */
 
         private void getResourceInfo()
         {
@@ -435,7 +399,7 @@ namespace MobiusResourceMonitor_sub
             {
                 meitCreate.IsEnabled = false;
 
-                if(this.ResourceName == (this.rm.aeName + @"_sub"))
+                if (this.ResourceName == (this.rm.aeName + @"_sub"))
                 {
                     meitDelete.IsEnabled = false;
                 }
@@ -476,7 +440,8 @@ namespace MobiusResourceMonitor_sub
                 if (!rm.DeleteResource(ResourcePath))
                 {
                     MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                } else
+                }
+                else
                 {
                     RaiseDeleteResourceEvent();
                 }
@@ -511,7 +476,7 @@ namespace MobiusResourceMonitor_sub
                     RaiseCreateResourceEvent(form.CIN);
                 }
             }
-            else if(item.Header.ToString() == "Subscription")
+            else if (item.Header.ToString() == "Subscription")
             {
                 CreateSubWindow form = new CreateSubWindow();
                 if (form.ShowDialog().Value)
@@ -519,7 +484,7 @@ namespace MobiusResourceMonitor_sub
                     RaiseCreateResourceEvent(form.SUB);
                 }
             }
-            else if(item.Header.ToString() == "Group")
+            else if (item.Header.ToString() == "Group")
             {
                 CreateGrpWindow form = new CreateGrpWindow();
                 if (form.ShowDialog().Value)
@@ -527,7 +492,7 @@ namespace MobiusResourceMonitor_sub
                     RaiseCreateResourceEvent(form.GRP);
                 }
             }
-            else if(item.Header.ToString() == "TimeSeries")
+            else if (item.Header.ToString() == "TimeSeries")
             {
                 CreateTsWindow form = new CreateTsWindow();
                 if (form.ShowDialog().Value)
@@ -535,15 +500,15 @@ namespace MobiusResourceMonitor_sub
                     RaiseCreateResourceEvent(form.TS);
                 }
             }
-            else if(item.Header.ToString() == "TimeSeriesContentInstance")
+            else if (item.Header.ToString() == "TimeSeriesContentInstance")
             {
                 CreateTsiWindow form = new CreateTsiWindow();
                 if (form.ShowDialog().Value)
                 {
                     RaiseCreateResourceEvent(form.TSI);
                 }
-            } 
-            else if(item.Header.ToString() == "SemanticDescriptor")
+            }
+            else if (item.Header.ToString() == "SemanticDescriptor")
             {
                 CreateSdWindow form = new CreateSdWindow();
                 if (form.ShowDialog().Value)
@@ -597,11 +562,11 @@ namespace MobiusResourceMonitor_sub
         }
     }
 
-    public class DeleteResourceEventArgs: EventArgs
+    public class DeleteResourceEventArgs : EventArgs
     {
     }
 
-    public class CreateResourceEventArgs: EventArgs
+    public class CreateResourceEventArgs : EventArgs
     {
         public OneM2MResource NewResource { get; set; }
 
