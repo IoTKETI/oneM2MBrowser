@@ -339,7 +339,6 @@ namespace MobiusResourceMonitor_sub
                 DeleteSubscriptionForContainer();
                 DeleteSubscriptionForTimeSeries();
 
-
                 //DeleteAppAE();
                 ProgressChanged(100, "Task finished...");
                 if (this.initHandler != null)
@@ -374,6 +373,7 @@ namespace MobiusResourceMonitor_sub
 
             GetAEResourceData();
             Console.WriteLine("AE Resource number: " + lstAe.Count);
+            GetAEIDs();
 
             ProgressChanged(1, "Request Container resource...");
 
@@ -561,7 +561,9 @@ namespace MobiusResourceMonitor_sub
 
             string path = @"/" + this.cseName + @"/" + sub_name;
 
-            DeleteResource(path);
+            string acp = lstSub[path].AccessControlPolicy;
+
+            DeleteResource(path, this.aeID);
 
             ProgressChanged(10, "Delete subscription " + sub_name + " from CSEBase...");
         }
@@ -576,7 +578,9 @@ namespace MobiusResourceMonitor_sub
             {
                 string path = lstAe[keys[i]].ResourcePath + @"/" + sub_name;
 
-                DeleteResource(path);
+                string acp = lstAe[keys[i]].AccessControlPolicy;
+
+                DeleteResource(path, this.aeID);
 
                 double dValue = (20.0 / lstAe.Count) * i + 10;
 
@@ -596,7 +600,9 @@ namespace MobiusResourceMonitor_sub
             {
                 string path = lstCon[keys[i]].ResourcePath + @"/" + sub_name;
 
-                DeleteResource(path);
+                string acp = lstCon[keys[i]].AccessControlPolicy;
+
+                DeleteResource(path, this.aeID);
 
                 double dValue = (35.0 / lstCon.Count) * i + 30;
 
@@ -613,8 +619,9 @@ namespace MobiusResourceMonitor_sub
             for (int i = 0; i < keys.Length; i++)
             {
                 string path = lstTs[keys[i]].ResourcePath + @"/" + sub_name;
+                string acp = lstTs[keys[i]].AccessControlPolicy;
 
-                DeleteResource(path);
+                DeleteResource(path, this.aeID);
 
                 double dValue = (35.0 / lstCon.Count) * i + 65;
 
@@ -630,6 +637,23 @@ namespace MobiusResourceMonitor_sub
         public void SetInitHandler(IInitResourceManagerHanler handler)
         {
             this.initHandler = handler;
+        }
+
+        private void GetAEIDs()
+        {
+            if(lstAe != null && lstAe.Count > 0)
+            {
+                string[] keys = lstAe.Keys.ToArray();
+
+                for(int i = 0; i < keys.Length; i++)
+                {
+                    string ae_path = lstAe[keys[i]].ResourcePath;
+
+                    AEObject ae_obj = GetAE(ae_path);
+
+                    lstAe[keys[i]].AccessControlPolicy = ae_obj.AEID;
+                }
+            }
         }
 
         private void GetAEResourceData()
@@ -677,6 +701,7 @@ namespace MobiusResourceMonitor_sub
                             int length = aryPath[i].Length - startIndex;
                             resc.ResourceName = aryPath[i].Substring(startIndex, length);
                             resc.ParentPath = aryPath[i].Substring(0, aryPath[i].Length - length - 1);
+
                             count++;
                             if (!lstAe.ContainsKey(resc.ResourcePath))
                             {
@@ -1340,6 +1365,48 @@ namespace MobiusResourceMonitor_sub
             return bResult;
         }
 
+        public AEObject GetAE(string path)
+        {
+            var ae = new AEObject();
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(this.rootUrl).Append(path);
+
+                string strUrl = sb.ToString();
+                Debug.WriteLine("Request URL:[GET] " + strUrl);
+
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+
+                req.Proxy = null;
+                req.Method = "GET";
+                req.Accept = "application/xml";
+                req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
+                req.Headers.Add("X-M2M-Origin", "S");
+
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+                if (resp.StatusCode == HttpStatusCode.OK)
+                {
+                    using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                    {
+                        string resp_content = sr.ReadToEnd();
+                        sr.Close();
+
+                        ae.Parse(resp_content, OneM2MResourceMessageType.XML);
+                    }
+                }
+
+                resp.Close();
+            }
+            catch (WebException exp)
+            {
+                Debug.WriteLine(exp.Message);
+            }
+
+            return ae;
+        }
+
         public bool CreaetAE(string path, AEObject ae)
         {
             bool bResult = false;
@@ -1832,7 +1899,7 @@ namespace MobiusResourceMonitor_sub
             task.Start();
         }
 
-        public bool DeleteResource(string resc_path)
+        public bool DeleteResource(string resc_path, string ae_id)
         {
             bool bResult = false;
 
@@ -1850,7 +1917,8 @@ namespace MobiusResourceMonitor_sub
                 req.Method = "DELETE";
                 req.Accept = "application/onem2m-resource+xml";
                 req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
-                req.Headers.Add("X-M2M-Origin", this.origin);
+                //req.Headers.Add("X-M2M-Origin", this.origin);
+                req.Headers.Add("X-M2M-Origin", ae_id);
 
                 HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
 
@@ -1860,8 +1928,19 @@ namespace MobiusResourceMonitor_sub
                 }
                 resp.Close();
             }
-            catch (Exception exp)
+            catch (WebException exp)
             {
+                HttpWebResponse resp = exp.Response as HttpWebResponse;
+                HttpStatusCode status_code = resp.StatusCode;
+
+                if(status_code == HttpStatusCode.Forbidden)
+                {
+                    OneM2MException m2m_exp = new OneM2MException();
+                    m2m_exp.ExceptionCode = 403;
+                    
+                    throw m2m_exp;
+                }
+                
                 Debug.WriteLine(exp.Message);
                 bResult = false;
             }
@@ -3564,7 +3643,7 @@ namespace MobiusResourceMonitor_sub
         void ProgressChanged(double percent, string messgage);
     }
 
-    class EncodingHelper
+    public class EncodingHelper
     {
         public static string Base64Encode(string data)
         {
@@ -3600,5 +3679,10 @@ namespace MobiusResourceMonitor_sub
                 throw new Exception("Error in Base64Decode: " + e.Message);
             }
         }
+    }
+
+    public class OneM2MException : Exception
+    {
+        public int ExceptionCode { get; set; }
     }
 }

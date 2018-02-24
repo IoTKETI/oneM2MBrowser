@@ -30,6 +30,7 @@ namespace MobiusResourceMonitor_sub
         public string ResourceName { get; set; }
         public string ParentPath { get; set; }
         public string ResourceType { get; set; }
+        public string AccessControlPolicy { get; set; }
         public ResourceStatusOption ResourceStatus
         {
             get

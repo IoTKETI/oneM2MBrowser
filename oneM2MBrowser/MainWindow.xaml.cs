@@ -596,11 +596,30 @@ namespace MobiusResourceMonitor_sub
             return sb.ToString();
         }
 
+        private ResourceObject parent_ae = null;
+
         private BlockObject ChildSeek(BlockObject node)
         {
             BlockObject block = null;
             if (node != null && node.Resource != null)
             {
+                if (node.Resource.ResourceType == "AE")
+                {
+                    parent_ae = node.Resource;
+                }
+
+                if (parent_ae != null)
+                {
+                    string ae_sub_string = @"/" + parent_ae.ResourceName + @"/";
+
+                    if (node.Resource.ResourcePath.Contains(ae_sub_string))
+                    {
+                        node.Resource.AccessControlPolicy = parent_ae.AccessControlPolicy;
+
+                        //Debug.WriteLine(node.Resource.ResourcePath + " -> " + parent_ae.ResourceName);
+                    }
+                }
+
                 if (node.Parent == null)
                 {
                     //Debug.WriteLine("Find a node[" + node.Resource.ResourcePath + "] in X:[" + node.Resource.Level + "] Y[" + NodeDepthLevel + "]");
@@ -820,6 +839,7 @@ namespace MobiusResourceMonitor_sub
                         resBlock.ResourceName = block.Resource.ResourceName;
                         resBlock.ResourcePath = block.Resource.ResourcePath;
                         resBlock.ResourceType = block.Resource.ResourceType;
+                        resBlock.AccessControlPolicy = block.Resource.AccessControlPolicy;
 
                         if (block.Resource.ResourceStatus == ResourceStatusOption.New)
                         {
@@ -1320,6 +1340,7 @@ namespace MobiusResourceMonitor_sub
                 for (int i = 1; i <= maxLevel; i++)
                 {
                     var rescList = new List<ResourceObject>();
+
                     for (int j = 0; j < totalResources.Count; j++)
                     {
                         if (totalResources[j].Level == i)

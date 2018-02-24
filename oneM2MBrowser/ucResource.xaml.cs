@@ -48,6 +48,12 @@ namespace MobiusResourceMonitor_sub
             set { SetValue(ResourceTypeProperty, value); }
         }
 
+        public string AccessControlPolicy
+        {
+            get;
+            set;
+        }
+
         public string RootUrl
         {
             get;
@@ -437,13 +443,34 @@ namespace MobiusResourceMonitor_sub
             form.SetResourcePath(ResourcePath);
             if (form.ShowDialog().Value)
             {
-                if (!rm.DeleteResource(ResourcePath))
+                try
                 {
-                    MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (!rm.DeleteResource(ResourcePath, AccessControlPolicy))
+                    {
+                        MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        RaiseDeleteResourceEvent();
+                    }
                 }
-                else
+                catch (OneM2MException exp)
                 {
-                    RaiseDeleteResourceEvent();
+                    if (exp.ExceptionCode == 403)
+                    {
+                        AcpInputWindow acpInputForm = new AcpInputWindow();
+                        if (acpInputForm.ShowDialog().Value)
+                        {
+                            if (!rm.DeleteResource(ResourcePath, acpInputForm.ACP))
+                            {
+                                MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                            else
+                            {
+                                RaiseDeleteResourceEvent();
+                            }
+                        }
+                    }
                 }
             }
         }
