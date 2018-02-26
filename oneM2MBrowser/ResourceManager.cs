@@ -1426,8 +1426,72 @@ namespace MobiusResourceMonitor_sub
                 req.Accept = "application/xml";
                 req.ContentType = "application/vnd.onem2m-res+xml;ty=2";
                 req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
-                req.Headers.Add("X-M2M-Origin", "S");
+                req.Headers.Add("X-M2M-Origin", this.origin);
 
+                string req_content = ae.ToString(OneM2MResourceMessageType.XML);
+
+                using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+                {
+                    sw.Write(req_content);
+                    sw.Flush();
+                    sw.Close();
+                }
+
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+                if (resp.StatusCode == HttpStatusCode.Created)
+                {
+                    bResult = true;
+
+                    if (resp.StatusCode == HttpStatusCode.Created)
+                    {
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            string resp_content = sr.ReadToEnd();
+                            sr.Close();
+
+                            ae.Parse(resp_content, OneM2MResourceMessageType.XML);
+                        }
+                    }
+                }
+                resp.Close();
+            }
+            catch (WebException exp)
+            {
+                Debug.WriteLine(exp.Message);
+            }
+
+            return bResult;
+        }
+
+        public bool CreaetAE(string path, AEObject ae, string acp)
+        {
+            bool bResult = false;
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(this.rootUrl).Append(path);
+
+                string strUrl = sb.ToString();
+                Debug.WriteLine("Request URL: [POST] " + strUrl);
+
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+
+                req.Proxy = null;
+                req.Method = "POST";
+                req.Accept = "application/xml";
+                req.ContentType = "application/vnd.onem2m-res+xml;ty=2";
+                req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
+                if (acp == null)
+                {
+                    req.Headers.Add("X-M2M-Origin", this.origin);
+                }
+                else
+                {
+                    req.Headers.Add("X-M2M-Origin", acp);
+                }
+            
                 string req_content = ae.ToString(OneM2MResourceMessageType.XML);
 
                 using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
@@ -1484,6 +1548,70 @@ namespace MobiusResourceMonitor_sub
                 req.ContentType = "application/vnd.onem2m-res+xml;ty=3";
                 req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
                 req.Headers.Add("X-M2M-Origin", this.origin);
+
+                string req_content = cnt.ToString(OneM2MResourceMessageType.XML);
+
+                using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+                {
+                    sw.Write(req_content);
+                    sw.Flush();
+                    sw.Close();
+                }
+
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+                if (resp.StatusCode == HttpStatusCode.Created)
+                {
+                    bResult = true;
+
+                    if (resp.StatusCode == HttpStatusCode.Created)
+                    {
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            string resp_content = sr.ReadToEnd();
+                            sr.Close();
+
+                            cnt.Parse(resp_content, OneM2MResourceMessageType.XML);
+                        }
+                    }
+                }
+                resp.Close();
+            }
+            catch (WebException exp)
+            {
+                Debug.WriteLine(exp.Message);
+            }
+
+            return bResult;
+        }
+
+        public bool CreateContainer(string path, ContainerObject cnt, string acp)
+        {
+            bool bResult = false;
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(this.rootUrl).Append(path);
+
+                string strUrl = sb.ToString();
+                Debug.WriteLine("Request URL: [POST] " + strUrl);
+
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+
+                req.Proxy = null;
+                req.Method = "POST";
+                req.Accept = "application/xml";
+                req.ContentType = "application/vnd.onem2m-res+xml;ty=3";
+                req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
+                if (acp == null)
+                {
+                    req.Headers.Add("X-M2M-Origin", this.origin);
+                }
+                else
+                {
+                    req.Headers.Add("X-M2M-Origin", acp);
+                }
 
                 string req_content = cnt.ToString(OneM2MResourceMessageType.XML);
 
@@ -1578,6 +1706,70 @@ namespace MobiusResourceMonitor_sub
             return bResult;
         }
 
+        public bool CreateContentInstance(string path, ContentInstanceObject cin, string acp)
+        {
+            bool bResult = false;
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(this.rootUrl).Append(path);
+
+                string strUrl = sb.ToString();
+                Debug.WriteLine("Request URL: [POST] " + strUrl);
+
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+
+                req.Proxy = null;
+                req.Method = "POST";
+                req.Accept = "application/xml";
+                req.ContentType = "application/vnd.onem2m-res+xml;ty=4";
+                req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
+                if (acp == null)
+                {
+                    req.Headers.Add("X-M2M-Origin", this.origin);
+                }
+                else
+                {
+                    req.Headers.Add("X-M2M-Origin", acp);
+                }
+
+                string req_content = cin.ToString(OneM2MResourceMessageType.XML);
+
+                using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+                {
+                    sw.Write(req_content);
+                    sw.Flush();
+                    sw.Close();
+                }
+
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+                if (resp.StatusCode == HttpStatusCode.Created)
+                {
+                    bResult = true;
+
+                    if (resp.StatusCode == HttpStatusCode.Created)
+                    {
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            string resp_content = sr.ReadToEnd();
+                            sr.Close();
+
+                            cin.Parse(resp_content, OneM2MResourceMessageType.XML);
+                        }
+                    }
+                }
+                resp.Close();
+            }
+            catch (WebException exp)
+            {
+                Debug.WriteLine(exp.Message);
+            }
+
+            return bResult;
+        }
+
         public bool CreateGroup(string path, GroupObject grp)
         {
             bool bResult = false;
@@ -1598,6 +1790,69 @@ namespace MobiusResourceMonitor_sub
                 req.ContentType = "application/vnd.onem2m-res+xml;ty=9";
                 req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
                 req.Headers.Add("X-M2M-Origin", this.origin);
+
+                string req_content = grp.ToString(OneM2MResourceMessageType.XML);
+
+                using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+                {
+                    sw.Write(req_content);
+                    sw.Flush();
+                    sw.Close();
+                }
+
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+                if (resp.StatusCode == HttpStatusCode.Created)
+                {
+                    bResult = true;
+
+                    if (resp.StatusCode == HttpStatusCode.Created)
+                    {
+                        using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                        {
+                            string resp_content = sr.ReadToEnd();
+                            sr.Close();
+
+                            grp.Parse(resp_content, OneM2MResourceMessageType.XML);
+                        }
+                    }
+                }
+                resp.Close();
+            }
+            catch (WebException exp)
+            {
+                Debug.WriteLine(exp.Message);
+            }
+
+            return bResult;
+        }
+
+        public bool CreateGroup(string path, GroupObject grp, string acp)
+        {
+            bool bResult = false;
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(this.rootUrl).Append(path);
+
+                string strUrl = sb.ToString();
+                Debug.WriteLine("Request URL: [POST] " + strUrl);
+
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+
+                req.Proxy = null;
+                req.Method = "POST";
+                req.Accept = "application/xml";
+                req.ContentType = "application/vnd.onem2m-res+xml;ty=9";
+                req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
+                if (acp == null)
+                {
+                    req.Headers.Add("X-M2M-Origin", this.origin);
+                }else
+                {
+                    req.Headers.Add("X-M2M-Origin", acp);
+                }
 
                 string req_content = grp.ToString(OneM2MResourceMessageType.XML);
 
@@ -1899,7 +2154,7 @@ namespace MobiusResourceMonitor_sub
             task.Start();
         }
 
-        public bool DeleteResource(string resc_path, string ae_id)
+        public bool DeleteResource(string resc_path, string acp)
         {
             bool bResult = false;
 
@@ -1918,8 +2173,14 @@ namespace MobiusResourceMonitor_sub
                 req.Accept = "application/onem2m-resource+xml";
                 req.Headers.Add("X-M2M-RI", Guid.NewGuid().ToString());
                 //req.Headers.Add("X-M2M-Origin", this.origin);
-                req.Headers.Add("X-M2M-Origin", ae_id);
-
+                if (acp == null)
+                {
+                    req.Headers.Add("X-M2M-Origin", this.origin);
+                }
+                else
+                {
+                    req.Headers.Add("X-M2M-Origin", acp);
+                }
                 HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
 
                 if (resp.StatusCode == HttpStatusCode.OK)

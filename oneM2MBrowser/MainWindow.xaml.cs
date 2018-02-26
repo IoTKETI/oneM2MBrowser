@@ -46,15 +46,19 @@ namespace MobiusResourceMonitor_sub
 
         private List<BlockObject> searchResult = new List<BlockObject>();
         private List<LineObject> lines = new List<LineObject>();
+        //private List<System.Windows.Shapes.Path> paths = new List<System.Windows.Shapes.Path>();
 
         private Button btnDecoding;
-        private ucResource ucRSelected;
+
+        private ResourceObject parent_ae = null;
 
         private ResourceSearchWindow winSearcher = new ResourceSearchWindow();
 
         private ResourceManager rm;
 
         private Task updateTask;
+
+        private ucResource ucRSelected;
 
         private bool isActived = false;
         private bool isStarted = false;
@@ -340,30 +344,6 @@ namespace MobiusResourceMonitor_sub
             }
         }
 
-        private void AddFrontLine(double block_x, double block_y)
-        {
-            double lineLength = BlockHorizontalSpace / 2;
-
-            double x1 = block_x - lineLength;
-            double y1 = block_y + BlockHeight / 2;
-            double x2 = block_x;
-            double y2 = block_y + BlockHeight / 2;
-
-            lines.Add(new LineObject() { StartX = x1, StartY = y1, EndX = x2, EndY = y2 });
-        }
-
-        private void AddBackLine(double block_x, double block_y)
-        {
-            double lineLength = BlockHorizontalSpace / 2;
-
-            double x1 = block_x + BlockWidth;
-            double y1 = block_y + BlockHeight / 2;
-            double x2 = block_x + BlockWidth + lineLength;
-            double y2 = block_y + BlockHeight / 2;
-
-            lines.Add(new LineObject() { StartX = x1, StartY = y1, EndX = x2, EndY = y2 });
-        }
-
         private void mnAbout_Click(object sender, RoutedEventArgs e)
         {
             AboutWindow mForm = new AboutWindow();
@@ -532,6 +512,10 @@ namespace MobiusResourceMonitor_sub
             this.searchKey = "";
         }
 
+        #endregion
+
+        #region Function
+
         private void clearSearchResult()
         {
             for (int i = 0; i < searchResult.Count; i++)
@@ -540,10 +524,6 @@ namespace MobiusResourceMonitor_sub
             }
             searchResult.Clear();
         }
-
-        #endregion
-
-        #region Function
 
         private void CaculatorBlockAndLine(BlockObject rootBlock)
         {
@@ -596,7 +576,31 @@ namespace MobiusResourceMonitor_sub
             return sb.ToString();
         }
 
-        private ResourceObject parent_ae = null;
+        /*
+        private void AddFrontLine(double block_x, double block_y)
+        {
+            double lineLength = BlockHorizontalSpace / 2;
+
+            double x1 = block_x - lineLength;
+            double y1 = block_y + BlockHeight / 2;
+            double x2 = block_x;
+            double y2 = block_y + BlockHeight / 2;
+
+            lines.Add(new LineObject() { StartX = x1, StartY = y1, EndX = x2, EndY = y2 });
+        }
+
+        private void AddBackLine(double block_x, double block_y)
+        {
+            double lineLength = BlockHorizontalSpace / 2;
+
+            double x1 = block_x + BlockWidth;
+            double y1 = block_y + BlockHeight / 2;
+            double x2 = block_x + BlockWidth + lineLength;
+            double y2 = block_y + BlockHeight / 2;
+
+            lines.Add(new LineObject() { StartX = x1, StartY = y1, EndX = x2, EndY = y2 });
+        }
+        */
 
         private BlockObject ChildSeek(BlockObject node)
         {
@@ -629,7 +633,7 @@ namespace MobiusResourceMonitor_sub
 
                     blocks.Add(node.Resource.ResourcePath, node);
 
-                    AddBackLine(node.PositionX, node.PositionY);
+                    //AddBackLine(node.PositionX, node.PositionY);
                 }
 
                 if (node != null && node.Childrens.Count > 0)
@@ -652,18 +656,27 @@ namespace MobiusResourceMonitor_sub
                             blocks.Add(node.Childrens[i].Resource.ResourcePath, node.Childrens[i]);
                         }
 
-                        AddFrontLine(node.Childrens[i].PositionX, node.Childrens[i].PositionY);
+                        //AddFrontLine(node.Childrens[i].PositionX, node.Childrens[i].PositionY);
 
+                        /*
                         var s_x = node.PositionX + BlockWidth + LineLength;
                         var s_y = node.PositionY + BlockHeight / 2;
                         var e_x = node.Childrens[i].PositionX - LineLength;
                         var e_y = node.Childrens[i].PositionY + BlockHeight / 2;
 
                         lines.Add(new LineObject() { StartX = s_x, StartY = s_y, EndX = e_x, EndY = e_y });
+                        */
+
+                        var s_x = node.PositionX + BlockWidth;
+                        var s_y = node.PositionY + BlockHeight / 2;
+                        var e_x = node.Childrens[i].PositionX;
+                        var e_y = node.Childrens[i].PositionY + BlockHeight / 2;
+
+                        lines.Add(new LineObject() { StartX = s_x, StartY = s_y, EndX = e_x, EndY = e_y });
 
                         if (node.Childrens[i].Childrens != null && node.Childrens[i].Childrens.Count > 0)
                         {
-                            AddBackLine(node.Childrens[i].PositionX, node.Childrens[i].PositionY);
+                            //AddBackLine(node.Childrens[i].PositionX, node.Childrens[i].PositionY);
                         }
 
                         block = ChildSeek(node.Childrens[i]);
@@ -779,19 +792,33 @@ namespace MobiusResourceMonitor_sub
 
                 this.cavLineView.Children.Clear();
 
+
                 foreach (var lineInfo in lines)
                 {
-                    var line = new Line();
+                    var mpath = new System.Windows.Shapes.Path();
 
-                    line.Stroke = Brushes.Green;
-                    line.StrokeThickness = 3;
-                    line.X1 = lineInfo.StartX;
-                    line.Y1 = lineInfo.StartY;
-                    line.X2 = lineInfo.EndX;
-                    line.Y2 = lineInfo.EndY;
+                    double start_x = lineInfo.StartX;
+                    double start_y = lineInfo.StartY;
+                    double end_x = lineInfo.EndX;
+                    double end_y = lineInfo.EndY;
 
-                    this.cavLineView.Children.Add(line);
+                    double step_x = (end_x - start_x) / 4.0;
+                    double step_y = (end_y - start_y) / 4.0;
+
+                    StreamGeometry geometry = new StreamGeometry();
+                    StreamGeometryContext ctx = geometry.Open();
+                    ctx.BeginFigure(new Point(start_x, start_y), true, false);
+                    ctx.BezierTo(new Point(start_x + step_x, start_y), new Point(start_x + step_x * 2, start_y + step_y), new Point(start_x + step_x * 2, start_y + step_y * 2), true, false);
+                    ctx.BezierTo(new Point(start_x + step_x * 2, end_y), new Point(start_x + step_x * 3, end_y), new Point(end_x, end_y), true, false);
+                    ctx.Close();
+
+                    mpath.Stroke = Brushes.Green;
+                    mpath.StrokeThickness = 3;
+                    mpath.Data = geometry;
+
+                    this.cavLineView.Children.Add(mpath);
                 }
+                
             }));
         }
 
