@@ -445,31 +445,36 @@ namespace MobiusResourceMonitor_sub
             {
                 try
                 {
-                    if (!rm.DeleteResource(ResourcePath, AccessControlPolicy))
+                    AcpInputWindow acpInputForm = new AcpInputWindow();
+                    if (acpInputForm.ShowDialog().Value)
                     {
-                        MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (!rm.DeleteResource(ResourcePath, acpInputForm.ACP))
+                        {
+                            MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        else
+                        {
+                            RaiseDeleteResourceEvent();
+                        }
                     }
-                    else
-                    {
-                        RaiseDeleteResourceEvent();
-                    }
+
                 }
                 catch (OneM2MException exp)
                 {
                     if (exp.ExceptionCode == 403)
                     {
-                        AcpInputWindow acpInputForm = new AcpInputWindow();
-                        if (acpInputForm.ShowDialog().Value)
-                        {
-                            if (!rm.DeleteResource(ResourcePath, acpInputForm.ACP))
-                            {
-                                MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
-                            else
-                            {
-                                RaiseDeleteResourceEvent();
-                            }
-                        }
+                        //AcpInputWindow acpInputForm = new AcpInputWindow();
+                        //if (acpInputForm.ShowDialog().Value)
+                        //{
+                        //    if (!rm.DeleteResource(ResourcePath, acpInputForm.ACP))
+                        //    {
+                        //        MessageBox.Show("Can not delete resource from mobius. checke the network status and try it again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        //    }
+                        //    else
+                        //    {
+                        //        RaiseDeleteResourceEvent();
+                        //    }
+                        //}
                     }
                 }
             }

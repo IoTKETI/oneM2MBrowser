@@ -133,7 +133,7 @@ namespace MobiusResourceMonitor_sub
                             StreamReader sr = new StreamReader(resp.GetResponseStream());
 
                             string content = sr.ReadToEnd();
-                            sr.Close();
+                             sr.Close();
 
                             int index_s = -1;
                             int index_e = -1;
@@ -302,9 +302,9 @@ namespace MobiusResourceMonitor_sub
 
                 InitAEInfoFromServer();
 
-                GetBaseResources();
+                GetBaseResources(); // CSE, AE 만 검색 
 
-                DiscoveResource();
+                DiscoveResource(); // 모든 리소스 다 찾기 
 
                 if (this.initHandler != null)
                 {
@@ -844,6 +844,37 @@ namespace MobiusResourceMonitor_sub
             }
         }
 
+
+        private string[] parserspFormJSON(string jsonMsg)
+        {
+            List<string> result = new List<string>();
+            var json = JObject.Parse(jsonMsg);
+
+            if (json["m2m:cin"].Type == JTokenType.Array)
+            {
+
+                JArray jsonArry = json["m2m:uril"] as JArray;
+
+                foreach (var item in jsonArry.Children())
+                {
+                    string value = item.ToString();
+
+                    result.Add(value);
+                }
+
+                return result.ToArray();
+
+            }
+            else if (json["m2m:uril"].Type == JTokenType.String)
+            {
+                return json["m2m:uril"].ToString().Split(' ');
+            }
+            else
+            {
+                return result.ToArray();
+            }
+        }
+
         private string[] parseUrilsFormJSON(string jsonMsg)
         {
             List<string> result = new List<string>();
@@ -1070,8 +1101,11 @@ namespace MobiusResourceMonitor_sub
         {
             ResourceObject[] resources = null; ;
 
-            string strUrl = this.rootUrl + containerPath + @"?fu=1&ty=4&lim=5&lvl=1";
+            //string strUrl = this.rootUrl + containerPath + @"?rcn=4&lvl=1&ty=4&la=5"; // rcn은 cin 내용까지 반환해줌 , lvl은 최신 순으로 내림차순으로 줌 
 
+            //
+            string strUrl = this.rootUrl + containerPath + @"?fu=1&lvl=1&ty=4&la=4"; //  fu는 리스트 형식으로 반환 
+       //      string strUrl = this.rootUrl + containerPath + @"?"; // 수정
             Debug.WriteLine("Request URL: [GET] " + strUrl);
 
             try
@@ -1096,38 +1130,62 @@ namespace MobiusResourceMonitor_sub
 
                     JObject json = JObject.Parse(content);
 
-                    if (json["m2m:uril"] != null)
-                    {
-                        string[] aryPath = parseUrilsFormJSON(content);
+            //        Debug.WriteLine("Request URL: [GET cin] " + json);
+                    
+               //     if (json["m2m:rsp"] != null)
+            //        {
+               //         var rsp = json["m2m:rsp"];
+                 //       Debug.WriteLine("Request URL: [Data] " + rsp);
+                        //var cin = rsp["m2m:cin"];
+                        
 
-                        for (int i = 0; i < aryPath.Length; i++)
-                        {
-                            if (aryPath[i].Trim().Length > 0)
+                        //if (rsp["m2m:cin"] != null)
+                        //{
+                        //    var cin = rsp["m2m:cin"];
+
+
+                            //foreach (JObject itemObj in cin)
+                            //{
+                                
+                                //var con = cin["con"];
+                         //       Debug.WriteLine("Request URL: [Data] " + itemObj.);
+                          //      JObject json = JObject.Parse(content);
+
+                            if (json["m2m:uril"] != null)
                             {
-                                //Debug.WriteLine(aryPath[i]);
-                                //test
-                                if (!aryPath[i].StartsWith("/"))
+                                string[] aryPath = parseUrilsFormJSON(content);
+
+                                Array.Reverse(aryPath);
+
+                                for (int i = 0; i < aryPath.Length; i++)
                                 {
-                                    aryPath[i] = "/" + aryPath[i];
+                                    if (aryPath[i].Trim().Length > 0)
+                                    {
+                                        //Debug.WriteLine(aryPath[i]);
+                                        //test
+                                        if (!aryPath[i].StartsWith("/"))
+                                        {
+                                            aryPath[i] = "/" + aryPath[i];
+                                        }
+                                        
+                                        ResourceObject resc = new ResourceObject();
+                                        resc.ResourceType = "ContentInstance";
+                                        resc.ResourcePath = aryPath[i];
+                                        int startIndex = aryPath[i].LastIndexOf('/') + 1;
+                                        int length = aryPath[i].Length - startIndex;
+                                        resc.ResourceName = aryPath[i].Substring(startIndex, length);
+                                        resc.ParentPath = aryPath[i].Substring(0, aryPath[i].Length - length - 1);
+
+                                        lstResources.Add(resc);
+                                    }
                                 }
-
-                                string[] strAry = aryPath[i].Split('/');
-
-                                ResourceObject resc = new ResourceObject();
-                                resc.ResourceType = "ContentInstance";
-                                resc.ResourcePath = aryPath[i];
-                                int startIndex = aryPath[i].LastIndexOf('/') + 1;
-                                int length = aryPath[i].Length - startIndex;
-                                resc.ResourceName = aryPath[i].Substring(startIndex, length);
-                                resc.ParentPath = aryPath[i].Substring(0, aryPath[i].Length - length - 1);
-
-                                lstResources.Add(resc);
                             }
-                        }
+                
+                        
                     }
 
                     resources = lstResources.ToArray();
-                }
+                
 
                 resp.Close();
             }
@@ -1144,7 +1202,7 @@ namespace MobiusResourceMonitor_sub
         {
             ResourceObject[] resources = null; ;
 
-            string strUrl = this.rootUrl + containerPath + @"?fu=1&ty=30&lim=5&lvl=1";
+            string strUrl = this.rootUrl + containerPath + @"?fu=1&lvl=1&ty=30&la=4";
 
             Debug.WriteLine("Request URL: [GET] " + strUrl);
 
@@ -2198,8 +2256,12 @@ namespace MobiusResourceMonitor_sub
                 {
                     OneM2MException m2m_exp = new OneM2MException();
                     m2m_exp.ExceptionCode = 403;
-                    
-                    throw m2m_exp;
+
+                   
+
+              
+
+            //        throw m2m_exp;
                 }
                 
                 Debug.WriteLine(exp.Message);
@@ -2299,7 +2361,7 @@ namespace MobiusResourceMonitor_sub
             if (Status == "working")
             {
                 var resourceName = r_name;
-                var parentPath = p_path;
+                var parentPath =   p_path;
                 var resourcePath = parentPath + @"/" + resourceName;
                 var resourceType = GetResoureceTypeString(r_type);
 
@@ -2416,6 +2478,8 @@ namespace MobiusResourceMonitor_sub
 
                     if (temp.Count >= maxCinCount)
                     {
+                        //lstCin.Remove(temp[4]);
+                        //lstCin.Insert(0, newResc);
                         temp.RemoveAt(temp.Count - 1);
                         temp.Insert(0, newResc);
                     }
@@ -2830,6 +2894,7 @@ namespace MobiusResourceMonitor_sub
 
         public void ReceiveNotificationMessage(string r_name, string p_path, string r_type, string evt_type)
         {
+            
             if (evt_type == "3")
             {
                 AddResource(r_name, p_path, r_type);

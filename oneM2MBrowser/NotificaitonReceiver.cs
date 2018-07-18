@@ -234,6 +234,9 @@ namespace MobiusResourceMonitor_sub
 
                         //call handler
                         Debug.WriteLine("[" + res_path + "] receive a message");
+
+                        if (!noti_parent.StartsWith("/")) noti_parent = @"/" + noti_parent;
+
                         if (this.handler != null)
                         {
                             this.handler.ReceiveNotificationMessage(obj.ResourceName, noti_parent, obj.ResourceType, obj.Evt);

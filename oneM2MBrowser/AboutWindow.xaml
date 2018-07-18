@@ -27,7 +27,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Version:" Margin="5"></TextBlock>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="0.0.0.0" Margin="5" x:Name="tbkVersion"></TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Author:" Margin="5"></TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="ChenNan" Margin="5"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="ChenNan, JongGwan An" Margin="5"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="HomePage:" Margin="5"></TextBlock>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="5">
                     <Hyperlink NavigateUri="http://www.iotocean.org/main"  Click="Hyperlink_Click">http://www.iotocean.org</Hyperlink>

@@ -100,10 +100,10 @@ namespace MobiusResourceMonitor_sub
         {
             InitializeComponent();
 
-            Loader = new ConfigLoader();
+            Loader = new ConfigLoader();  // 기본 Conf 파일 설정 
             Loader.initConf();
 
-            winSearcher.OnSearching += Searcher_OnSearching;
+            winSearcher.OnSearching += Searcher_OnSearching;  
             winSearcher.OnSearchFinished += Searcher_OnSearchFinish;
         }
 
@@ -127,16 +127,16 @@ namespace MobiusResourceMonitor_sub
                         return;
                     }
 
-                    AEObject ae = new AEObject();
-                    ae.RN = Loader.AppName;
-                    ae.AppID = RandomString(15);
+                    AEObject ae = new AEObject(); //AE 리소스 타입 Number로 생성 
+                    ae.RN = Loader.AppName;  // Config 에서 호출 
+                    ae.AppID = RandomString(15); 
                     ae.AEID = "";
 
-                    if (CreateAE(ae))
+                    if (CreateAE(ae))  // CSE 생성 여부 테스트 
                     {
-                        if (ae.AEID.Trim().Length == 0)
+                        if (ae.AEID.Trim().Length == 0) // AE id 체크 
                         {
-                            GetAE(ae);
+                            GetAE(ae); 
                         }
                     }
 
@@ -145,7 +145,7 @@ namespace MobiusResourceMonitor_sub
                         this.aeID = ae.AEID;
                         this.origin = ae.AEID;
 
-                        var result = IsEffectiveResource(this.txtResourceUri.Text);
+                        var result = IsEffectiveResource(this.txtResourceUri.Text); // GET AE Check
 
                         if (result == ResourceEffectiveResult.DoNotExisted)
                         {
@@ -185,9 +185,9 @@ namespace MobiusResourceMonitor_sub
                             return;
                         }
 
-                        SaveConfigFile();
+                        SaveConfigFile();  // 현 Config 상태 저장, 조회한 IP, AENAME 등 
 
-                        rm = new ResourceManager(Loader.ResourcePath, Loader.AppName, this.aeID, this.origin);
+                        rm = new ResourceManager(Loader.ResourcePath, Loader.AppName, this.aeID, this.origin); // 리소스를 관리하기위한 Restful 사전 준비 fu ty 등등 Discovery  api 
                         rm.SetProtocolInfo("MQTT", this.brokerIP);
                         rm.SetProgressChangedHandler(this);
                         rm.SetInitHandler(this);
@@ -197,11 +197,11 @@ namespace MobiusResourceMonitor_sub
 
                         this.txtResourceUri.IsEnabled = false;
 
-                        rm.Start();
+                        rm.Start(); // 모든 자원 디스커버리 파트 
 
                         command = "working";
 
-                        updateTask = new Task(new Action(UpdateChart));
+                        updateTask = new Task(new Action(UpdateChart));  // UI 파트 
                         updateTask.Start();
                     }
                 }
@@ -1202,7 +1202,7 @@ namespace MobiusResourceMonitor_sub
                 sb.Append(this.rootUri).Append(@"/").Append(this.cseName);
 
                 string strUrl = sb.ToString();
-                Debug.WriteLine("Request URL: [POST] " + strUrl);
+                Debug.WriteLine("Request URL: [POST] " + strUrl);   
 
                 HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(strUrl);
 
@@ -1346,7 +1346,7 @@ namespace MobiusResourceMonitor_sub
             return isResult;
         }
 
-        private BlockObject MakeTree(List<ResourceObject> totalResources)
+        private BlockObject MakeTree(List<ResourceObject> totalResources)  // 리소스 구조 생성
         {
             var rootBlock = new BlockObject();
 
